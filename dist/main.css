@@ -1,0 +1,38 @@
+h2 {
+    font-family: 'Press Start 2P', cursive;
+    margin: 0px;
+}
+
+body{
+    margin: 0;
+}
+
+.start-screen__bg {
+    height: 100%;
+    background-color: blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-screen__form-logo{
+    padding: 30px;
+}
+
+.spawn-screen {
+    background-color: grey;
+}
+
+.screen {
+    height: 100vh;
+    width: 100%;
+}
+
+.hero {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    background-color:red;
+    position: absolute;
+
+}
