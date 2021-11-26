@@ -2,35 +2,41 @@ export class collider {
     static colliderList = []
     constructor(DOMELEMENT) {
         this.element = DOMELEMENT
+        this.momentumX = null
+        this.momentumY = null
+        this.collision = false
+
+
 
         collider.colliderList.push({
             element: DOMELEMENT,
-            rectObj: DOMELEMENT.getBoundingClientRect()
+            instance: this,
         })
     }
 
-    watchCollision = () => {
+    static watchCollision = () => {
         //check for collision every 200 ms
         setInterval(() => {
             // check for collision
             for (let i = 0; i < collider.colliderList.length; i++) {
                 if (i !== 0) {
                     // compare if collision here
-                    let rect1 = collider.colliderList[i].rectObj
-                    let rect2 = collider.colliderList[i - 1].rectObj
+                    let rect1 = collider.colliderList[i].element.getBoundingClientRect()
+                    let rect2 = collider.colliderList[i - 1].element.getBoundingClientRect()
 
-                    let overlap = !(rect1.right < rect2.left ||
-                        rect1.left > rect2.right ||
+                    let overlap = !(
+                        rect1.top > rect2.bottom ||
+                        rect1.right < rect2.left ||
                         rect1.bottom < rect2.top ||
-                        rect1.top > rect2.bottom)
-
-                    console.log(overlap ? 'overlapped!' : 'not touching')
-
+                        rect1.left > rect2.right
+                    );
                     //end collision compare
+                    collider.colliderList[i].instance.collision = overlap
+                    collider.colliderList[i - 1].instance.collision = overlap
                 }
             }
 
-        }, 2000)
+        }, 50)
     }
 
     setPositionPX = (x, y) => {
@@ -38,30 +44,53 @@ export class collider {
         this.element.style.top = `${y}px`
     }
 
+    mapDirections = (direction, isPositive) => {
+        let mappedDirection
+        if (direction === 'right' && isPositive) mappedDirection = 'right'
+        if (direction === 'right' && !isPositive) mappedDirection = 'left'
+        if (direction === 'top' && isPositive) mappedDirection = 'down'
+        if (direction === 'top' && !isPositive) mappedDirection = 'top'
+        return mappedDirection
+    }
+
+   
+
     move = (direction, isPositive) => {
-        let current = parseInt(this.element.style[direction].replace('px',''))
+
+        if (this.collision) {
+            this.collision = false
+            return this.move(direction, !isPositive)
+        }
+
+        let current = parseInt(this.element.style[direction].replace('px', ''))
         let newVal = isPositive ? current += 2 : current -= 2
         let newValPx = newVal + 'px'
         this.element.style[direction] = newValPx
+
     }
 
 
     moveRight = () => {
-       this.move('right',true)
+        this.momentumX = 'right'
+        this.move('right', true)
     }
     moveLeft = () => {
-        this.move('right',false)
+        this.momentumX = 'left'
+        this.move('right', false)
     }
     moveUp = () => {
-        this.move('top',false)
+        this.momentumY = 'top'
+        this.move('top', false)
     }
     moveDown = () => {
-        this.move('top',true)
+        this.momentumY = 'down'
+        this.move('top', true)
     }
 
+
 }
-export class hero extends collider { 
-    constructor(DOMELEMENT){
+export class hero extends collider {
+    constructor(DOMELEMENT) {
         super(DOMELEMENT)
     }
 
@@ -69,9 +98,14 @@ export class hero extends collider {
 
 
 export class enemy extends collider {
+    constructor(DOMELEMENT) {
+        super(DOMELEMENT)
+    }
 
 }
 
 export class barrier extends collider {
-
+    constructor(DOMELEMENT) {
+        super(DOMELEMENT)
+    }
 }
