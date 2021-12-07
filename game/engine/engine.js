@@ -5,6 +5,7 @@ export class collider {
         this.momentumX = null
         this.momentumY = null
         this.collision = false
+        
 
 
 
@@ -14,29 +15,40 @@ export class collider {
         })
     }
 
+    static checkCollisions = () => {
+        console.log('checking collision')
+        for (let i = 0; i < collider.colliderList.length; i++) {
+            if (i !== 0) {
+                // compare if collision here
+                let rect1 = collider.colliderList[i].element.getBoundingClientRect()
+                let rect2 = collider.colliderList[i - 1].element.getBoundingClientRect()
+
+                let overlap = !(
+                    rect1.top > rect2.bottom ||
+                    rect1.right < rect2.left ||
+                    rect1.bottom < rect2.top ||
+                    rect1.left > rect2.right
+                );
+
+
+                //end collision compare
+                collider.colliderList[i].instance.collision = overlap
+                collider.colliderList[i - 1].instance.collision = overlap
+
+                if (overlap)
+                    return true
+            }
+        }
+        return false
+    }
+
     static watchCollision = () => {
         //check for collision every 200 ms
         setInterval(() => {
             // check for collision
-            for (let i = 0; i < collider.colliderList.length; i++) {
-                if (i !== 0) {
-                    // compare if collision here
-                    let rect1 = collider.colliderList[i].element.getBoundingClientRect()
-                    let rect2 = collider.colliderList[i - 1].element.getBoundingClientRect()
+            collider.checkCollisions()
 
-                    let overlap = !(
-                        rect1.top > rect2.bottom ||
-                        rect1.right < rect2.left ||
-                        rect1.bottom < rect2.top ||
-                        rect1.left > rect2.right
-                    );
-                    //end collision compare
-                    collider.colliderList[i].instance.collision = overlap
-                    collider.colliderList[i - 1].instance.collision = overlap
-                }
-            }
-
-        }, 50)
+        }, 20)
     }
 
     setPositionPX = (x, y) => {
@@ -53,29 +65,28 @@ export class collider {
         return mappedDirection
     }
 
-   
+
 
     move = (direction, isPositive) => {
-
-        if (this.collision) {
-            this.collision = false
-            return this.move(direction, !isPositive)
-        }
-
-        let current = parseInt(this.element.style[direction].replace('px', ''))
-        let newVal = isPositive ? current += 2 : current -= 2
-        let newValPx = newVal + 'px'
-        this.element.style[direction] = newValPx
-
+            let current = parseInt(this.element.style[direction].replace('px', ''))
+            let newVal = isPositive ? current += 8 : current -= 8
+            let newValPx = newVal + 'px'
+            this.element.style[direction] = newValPx
+            if (collider.checkCollisions()){
+                let current = parseInt(this.element.style[direction].replace('px', ''))
+                let newVal = isPositive ? current -= 8 : current += 8
+                let newValPx = newVal + 'px'
+                this.element.style[direction] = newValPx
+            }
     }
 
 
-    moveRight = () => {
+    moveLeft = () => {
         this.momentumX = 'right'
         this.move('right', true)
     }
-    moveLeft = () => {
-        this.momentumX = 'left'
+    moveRight = () => {
+        this.momentumX = 'right'
         this.move('right', false)
     }
     moveUp = () => {

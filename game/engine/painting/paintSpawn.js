@@ -1,5 +1,6 @@
 //spawns hero
 import { barrier, collider, hero } from '../engine'
+import BindHeroMovement from '../../input/eventlisteners/hero'
 
 export default function (callback) {
     
@@ -23,15 +24,11 @@ export default function (callback) {
         window.innerHeight - (heroElement.getBoundingClientRect().height) - 200
         )
     heroObject.setPositionPX(window.innerWidth / 2 - (heroElement.getBoundingClientRect().width / 2), window.innerHeight - (heroElement.getBoundingClientRect().height))
-    const intervalTest = setInterval(() => {
-        heroObject.moveUp()
-    }, 50)
-    setTimeout(() => {
-        clearInterval(intervalTest)
-        heroObject.moveDown()
-        setInterval(() => {heroObject.moveDown(); heroObject.moveRight()}, 50)
-        
-    },6000)
+    
+    
+
     collider.watchCollision()
-    callback()
+    callback(
+        new BindHeroMovement(heroObject)
+        )
 }
