@@ -5,7 +5,6 @@ export default class {
             switch(e.key) {
                 case 'ArrowUp':
                     this.hero.moveUp()
-                    
                     break
                 case 'ArrowDown':
                     this.hero.moveDown()
@@ -17,7 +16,9 @@ export default class {
                     break
                 case 'ArrowLeft':
                     this.hero.moveLeft()
-                    
+                    break
+                case ' ':
+                    this.hero.attack()
                     break
                 default:
                     console.log(e)

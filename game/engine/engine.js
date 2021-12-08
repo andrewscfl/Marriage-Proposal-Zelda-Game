@@ -5,18 +5,24 @@ export class collider {
         this.momentumX = null
         this.momentumY = null
         this.collision = false
-        
-
-
-
-        collider.colliderList.push({
+        this.facingDirection = null
+        this.instanceIndex = collider.colliderList.push({
             element: DOMELEMENT,
             instance: this,
         })
     }
 
+
+    destroyInstance = () => {
+        collider.colliderList[this.instanceIndex - 1].element.remove()
+        collider.colliderList.splice(this.instanceIndex - 1,1)
+    }
+
+
+    getFacingDirection = () => this.facingDirection
+
     static checkCollisions = () => {
-        console.log('checking collision')
+
         for (let i = 0; i < collider.colliderList.length; i++) {
             if (i !== 0) {
                 // compare if collision here
@@ -68,33 +74,37 @@ export class collider {
 
 
     move = (direction, isPositive) => {
+        let current = parseInt(this.element.style[direction].replace('px', ''))
+        let newVal = isPositive ? current += 8 : current -= 8
+        let newValPx = newVal + 'px'
+        this.element.style[direction] = newValPx
+        if (collider.checkCollisions()) {
             let current = parseInt(this.element.style[direction].replace('px', ''))
-            let newVal = isPositive ? current += 8 : current -= 8
+            let newVal = isPositive ? current -= 8 : current += 8
             let newValPx = newVal + 'px'
             this.element.style[direction] = newValPx
-            if (collider.checkCollisions()){
-                let current = parseInt(this.element.style[direction].replace('px', ''))
-                let newVal = isPositive ? current -= 8 : current += 8
-                let newValPx = newVal + 'px'
-                this.element.style[direction] = newValPx
-            }
+        }
     }
 
 
     moveLeft = () => {
+        this.facingDirection = 'left'
         this.momentumX = 'right'
         this.move('right', true)
     }
     moveRight = () => {
+        this.facingDirection = 'right'
         this.momentumX = 'right'
         this.move('right', false)
     }
     moveUp = () => {
+        this.facingDirection = 'top'
         this.momentumY = 'top'
         this.move('top', false)
     }
     moveDown = () => {
-        this.momentumY = 'down'
+        this.facingDirection = 'bottom'
+        this.momentumY = 'top'
         this.move('top', true)
     }
 
@@ -103,10 +113,28 @@ export class collider {
 export class hero extends collider {
     constructor(DOMELEMENT) {
         super(DOMELEMENT)
+        this.hero = DOMELEMENT
     }
 
-}
+    attack = () => {
+        const direction = this.getFacingDirection()
+        const { x,y } = this.hero.getBoundingClientRect()
+        console.log(x,y)
+        const weaponElem = document.createElement('div')
+        weaponElem.style.width = '200px'
+        weaponElem.style.height = '150px'
+        weaponElem.style.backgroundColor = 'green'
+        weaponElem.style.position = 'absolute'
+        document.body.appendChild(weaponElem)
+        const weapon = new collider(weaponElem)
+        weapon.setPositionPX(window.innerWidth - x - 200,y - 100)
+        collider.checkCollisions()
+        console.log(weapon.collision)
+        setTimeout(() => weapon.destroyInstance() , 500)
+        
 
+    }
+}
 
 export class enemy extends collider {
     constructor(DOMELEMENT) {
