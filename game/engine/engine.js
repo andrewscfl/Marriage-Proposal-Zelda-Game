@@ -118,6 +118,7 @@ export class hero extends collider {
 
     attack = () => {
         const direction = this.getFacingDirection()
+        console.log(direction)
         const { x,y } = this.hero.getBoundingClientRect()
         console.log(x,y)
         const weaponElem = document.createElement('div')
@@ -127,12 +128,26 @@ export class hero extends collider {
         weaponElem.style.position = 'absolute'
         document.body.appendChild(weaponElem)
         const weapon = new collider(weaponElem)
-        weapon.setPositionPX(window.innerWidth - x - 200,y - 100)
+        
+        switch(direction) {
+            case 'top':
+                weapon.setPositionPX(window.innerWidth - x - 200,y - 100) 
+                break
+            case 'bottom':
+                weapon.setPositionPX(window.innerWidth - x - 200,y + 150)
+                break
+            case 'right':
+                weapon.setPositionPX(window.innerWidth - x - 300,y + 25)
+                break
+            case 'left':
+                weapon.setPositionPX(window.innerWidth - x - 100,y + 25)
+                break
+        }
+
         collider.checkCollisions()
         console.log(weapon.collision)
         setTimeout(() => weapon.destroyInstance() , 500)
-        
-
+    
     }
 }
 
