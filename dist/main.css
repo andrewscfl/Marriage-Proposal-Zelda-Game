@@ -46,8 +46,6 @@ body{
 }
 
 .wall {
-    width: 1000px;
-    height: 30px;
     position: absolute;
     background-color: blue;
 }
