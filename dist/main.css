@@ -37,6 +37,14 @@ body{
 
 }
 
+.enemy {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    background-color:purple;
+    position: absolute;
+}
+
 .wall {
     width: 1000px;
     height: 30px;

@@ -1,17 +1,18 @@
 export class collider {
     static colliderList = []
     constructor(DOMELEMENT) {
+        console.log('running')
         this.element = DOMELEMENT
         this.momentumX = null
         this.momentumY = null
         this.collision = false
+        this.isHero = false
         this.facingDirection = null
         this.instanceIndex = collider.colliderList.push({
             element: DOMELEMENT,
             instance: this,
         })
     }
-
 
     destroyInstance = () => {
         collider.colliderList[this.instanceIndex - 1].element.remove()
@@ -20,14 +21,15 @@ export class collider {
 
 
     getFacingDirection = () => this.facingDirection
+    getHeroStatus = () => this.isHero
 
     static checkCollisions = () => {
 
         for (let i = 0; i < collider.colliderList.length; i++) {
-            if (i !== 0) {
+            for (let x = (i + 1); x < collider.colliderList.length; x++){
                 // compare if collision here
                 let rect1 = collider.colliderList[i].element.getBoundingClientRect()
-                let rect2 = collider.colliderList[i - 1].element.getBoundingClientRect()
+                let rect2 = collider.colliderList[x].element.getBoundingClientRect()
 
                 let overlap = !(
                     rect1.top > rect2.bottom ||
@@ -39,23 +41,16 @@ export class collider {
 
                 //end collision compare
                 collider.colliderList[i].instance.collision = overlap
-                collider.colliderList[i - 1].instance.collision = overlap
+                collider.colliderList[x].instance.collision = overlap
 
                 if (overlap)
                     return true
-            }
+            } 
         }
         return false
     }
 
-    static watchCollision = () => {
-        //check for collision every 200 ms
-        setInterval(() => {
-            // check for collision
-            collider.checkCollisions()
-
-        }, 20)
-    }
+   
 
     setPositionPX = (x, y) => {
         this.element.style.right = `${x}px`
@@ -78,7 +73,10 @@ export class collider {
         let newVal = isPositive ? current += 8 : current -= 8
         let newValPx = newVal + 'px'
         this.element.style[direction] = newValPx
-        if (collider.checkCollisions()) {
+        collider.checkCollisions()
+        console.log('collision: ' + collider.checkCollisions())
+        if (this.collision) {
+            console.log('collision')
             let current = parseInt(this.element.style[direction].replace('px', ''))
             let newVal = isPositive ? current -= 8 : current += 8
             let newValPx = newVal + 'px'
@@ -114,6 +112,7 @@ export class hero extends collider {
     constructor(DOMELEMENT) {
         super(DOMELEMENT)
         this.hero = DOMELEMENT
+        this.isHero = true
     }
 
     attack = () => {
@@ -154,12 +153,17 @@ export class hero extends collider {
 export class enemy extends collider {
     constructor(DOMELEMENT) {
         super(DOMELEMENT)
+        this.enemy = DOMELEMENT
     }
 
-}
-
-export class barrier extends collider {
-    constructor(DOMELEMENT) {
-        super(DOMELEMENT)
+    attack = () => {
+        const heroElement = collider.colliderList.filter(item => item.instance.getHeroStatus())
+        const hero = heroElement.length > 0 ? heroElement[0] : null
+        if (hero !== null){
+            // find slope and fire projectile in direction here
+        }
     }
+
+
+
 }
