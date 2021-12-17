@@ -3,6 +3,7 @@ export class collider {
     constructor(DOMELEMENT) {
         console.log('running')
         this.element = DOMELEMENT
+        this.type = ''
         this.momentumX = null
         this.momentumY = null
         this.collision = false
@@ -23,6 +24,38 @@ export class collider {
     getFacingDirection = () => this.facingDirection
     getHeroStatus = () => this.isHero
 
+    // check if impact on any and all elements
+    static detectImpact = () => {
+        let impacted = false
+        for (let i = 0; i < collider.colliderList.length; i++) {
+            for (let x = (i + 1); x < collider.colliderList.length; x++){
+                // compare if collision here
+                let rect1 = collider.colliderList[i].element.getBoundingClientRect()
+                let rect2 = collider.colliderList[x].element.getBoundingClientRect()
+
+                let overlap = !(
+                    rect1.top > rect2.bottom ||
+                    rect1.right < rect2.left ||
+                    rect1.bottom < rect2.top ||
+                    rect1.left > rect2.right
+                );
+
+
+                //end collision compare
+                collider.colliderList[i].instance.collision = overlap
+                collider.colliderList[x].instance.collision = overlap
+
+                
+                if (overlap){
+                    impacted = true
+                }
+            } 
+        }
+        
+        return impacted
+    }
+
+    //method prevents walk forward on collision
     static checkCollisions = () => {
 
         for (let i = 0; i < collider.colliderList.length; i++) {
@@ -43,10 +76,13 @@ export class collider {
                 collider.colliderList[i].instance.collision = overlap
                 collider.colliderList[x].instance.collision = overlap
 
-                if (overlap)
+                
+                if (overlap){
                     return true
+                }
             } 
         }
+        
         return false
     }
 
@@ -74,7 +110,6 @@ export class collider {
         let newValPx = newVal + 'px'
         this.element.style[direction] = newValPx
         collider.checkCollisions()
-        console.log('collision: ' + collider.checkCollisions())
         if (this.collision) {
             console.log('collision')
             let current = parseInt(this.element.style[direction].replace('px', ''))
@@ -108,11 +143,22 @@ export class collider {
 
 
 }
+
+export class attackWeapon extends collider {
+    constructor(DOMELEMENT){
+        super(DOMELEMENT)
+        this.type = 'weapon'
+    }
+}
+
+
+
 export class hero extends collider {
     constructor(DOMELEMENT) {
         super(DOMELEMENT)
         this.hero = DOMELEMENT
         this.isHero = true
+        this.type = 'hero'
     }
 
     attack = () => {
@@ -126,7 +172,7 @@ export class hero extends collider {
         weaponElem.style.backgroundColor = 'green'
         weaponElem.style.position = 'absolute'
         document.body.appendChild(weaponElem)
-        const weapon = new collider(weaponElem)
+        const weapon = new attackWeapon(weaponElem)
         
         switch(direction) {
             case 'top':
@@ -143,9 +189,29 @@ export class hero extends collider {
                 break
         }
 
-        collider.checkCollisions()
-        console.log(weapon.collision)
-        setTimeout(() => weapon.destroyInstance() , 500)
+
+
+        collider.detectImpact()
+
+        if (this.collision){
+            console.log('collision')
+            collider.colliderList.forEach(i => {
+                if (i.instance.collision && i.instance.type === 'enemy'){
+                    i.instance.lives -= 1
+                    if (i.instance.lives < 1){
+                        i.element.style.display = 'none'
+                    }
+                    
+                }
+            })
+        }
+
+       
+
+
+
+
+        setTimeout(() => weapon.destroyInstance() , 200)
     
     }
 }
@@ -154,6 +220,8 @@ export class enemy extends collider {
     constructor(DOMELEMENT) {
         super(DOMELEMENT)
         this.enemy = DOMELEMENT
+        this.lives = 2
+        this.type = 'enemy'
     }
 
     attack = () => {
@@ -161,8 +229,11 @@ export class enemy extends collider {
         const hero = heroElement.length > 0 ? heroElement[0] : null
         if (hero !== null){
             // find slope and fire projectile in direction here
+            
         }
     }
+
+
 
 
 
