@@ -56,13 +56,6 @@ export default function (callback) {
     enemyObject.setPositionPX(window.innerWidth/2 - (enemyElement.getBoundingClientRect().width /2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 400 )
 
 
-    const enemyAttack = setInterval(() => {
-        enemyObject.attack()
-    }, 2000)
-
-
-
-
     callback(
         new BindHeroMovement(heroObject)
     )

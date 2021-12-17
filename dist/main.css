@@ -34,6 +34,7 @@ body{
     border-radius: 50%;
     background-color:red;
     position: absolute;
+    transition: all linear;
 
 }
 
@@ -48,4 +49,16 @@ body{
 .wall {
     position: absolute;
     background-color: blue;
+}
+
+.projectile {
+    background-color: green;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transition: all linear;
+}
+
+body{
+    overflow: hidden;
 }

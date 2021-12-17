@@ -17,7 +17,7 @@ export class collider {
 
     destroyInstance = () => {
         collider.colliderList[this.instanceIndex - 1].element.remove()
-        collider.colliderList.splice(this.instanceIndex - 1,1)
+        collider.colliderList.splice(this.instanceIndex - 1, 1)
     }
 
 
@@ -28,7 +28,7 @@ export class collider {
     static detectImpact = () => {
         let impacted = false
         for (let i = 0; i < collider.colliderList.length; i++) {
-            for (let x = (i + 1); x < collider.colliderList.length; x++){
+            for (let x = (i + 1); x < collider.colliderList.length; x++) {
                 // compare if collision here
                 let rect1 = collider.colliderList[i].element.getBoundingClientRect()
                 let rect2 = collider.colliderList[x].element.getBoundingClientRect()
@@ -45,21 +45,17 @@ export class collider {
                 collider.colliderList[i].instance.collision = overlap
                 collider.colliderList[x].instance.collision = overlap
 
-                
-                if (overlap){
-                    impacted = true
-                }
-            } 
+            }
         }
-        
-        return impacted
+
+
     }
 
     //method prevents walk forward on collision
     static checkCollisions = () => {
 
         for (let i = 0; i < collider.colliderList.length; i++) {
-            for (let x = (i + 1); x < collider.colliderList.length; x++){
+            for (let x = (i + 1); x < collider.colliderList.length; x++) {
                 // compare if collision here
                 let rect1 = collider.colliderList[i].element.getBoundingClientRect()
                 let rect2 = collider.colliderList[x].element.getBoundingClientRect()
@@ -76,17 +72,17 @@ export class collider {
                 collider.colliderList[i].instance.collision = overlap
                 collider.colliderList[x].instance.collision = overlap
 
-                
-                if (overlap){
+
+                if (overlap) {
                     return true
                 }
-            } 
+            }
         }
-        
+
         return false
     }
 
-   
+
 
     setPositionPX = (x, y) => {
         this.element.style.right = `${x}px`
@@ -145,9 +141,16 @@ export class collider {
 }
 
 export class attackWeapon extends collider {
-    constructor(DOMELEMENT){
+    constructor(DOMELEMENT) {
         super(DOMELEMENT)
         this.type = 'weapon'
+    }
+}
+
+export class projectile extends collider {
+    constructor(DOMELEMENT) {
+        super(DOMELEMENT)
+        this.type = 'projectile'
     }
 }
 
@@ -164,8 +167,8 @@ export class hero extends collider {
     attack = () => {
         const direction = this.getFacingDirection()
         console.log(direction)
-        const { x,y } = this.hero.getBoundingClientRect()
-        console.log(x,y)
+        const { x, y } = this.hero.getBoundingClientRect()
+        console.log(x, y)
         const weaponElem = document.createElement('div')
         weaponElem.style.width = '200px'
         weaponElem.style.height = '150px'
@@ -173,19 +176,19 @@ export class hero extends collider {
         weaponElem.style.position = 'absolute'
         document.body.appendChild(weaponElem)
         const weapon = new attackWeapon(weaponElem)
-        
-        switch(direction) {
+
+        switch (direction) {
             case 'top':
-                weapon.setPositionPX(window.innerWidth - x - 200,y - 100) 
+                weapon.setPositionPX(window.innerWidth - x - 200, y - 100)
                 break
             case 'bottom':
-                weapon.setPositionPX(window.innerWidth - x - 200,y + 150)
+                weapon.setPositionPX(window.innerWidth - x - 200, y + 150)
                 break
             case 'right':
-                weapon.setPositionPX(window.innerWidth - x - 300,y + 25)
+                weapon.setPositionPX(window.innerWidth - x - 300, y + 25)
                 break
             case 'left':
-                weapon.setPositionPX(window.innerWidth - x - 100,y + 25)
+                weapon.setPositionPX(window.innerWidth - x - 100, y + 25)
                 break
         }
 
@@ -193,26 +196,26 @@ export class hero extends collider {
 
         collider.detectImpact()
 
-        if (this.collision){
+        if (this.collision) {
             console.log('collision')
             collider.colliderList.forEach(i => {
-                if (i.instance.collision && i.instance.type === 'enemy'){
+                if (i.instance.collision && i.instance.type === 'enemy') {
                     i.instance.lives -= 1
-                    if (i.instance.lives < 1){
+                    if (i.instance.lives < 1) {
                         i.element.style.display = 'none'
                     }
-                    
+
                 }
             })
         }
 
-       
 
 
 
 
-        setTimeout(() => weapon.destroyInstance() , 200)
-    
+
+        setTimeout(() => weapon.destroyInstance(), 200)
+
     }
 }
 
@@ -222,14 +225,64 @@ export class enemy extends collider {
         this.enemy = DOMELEMENT
         this.lives = 2
         this.type = 'enemy'
+
+        setInterval(() => {
+            this.attack()
+        }, 4000)
     }
+
+
 
     attack = () => {
         const heroElement = collider.colliderList.filter(item => item.instance.getHeroStatus())
         const hero = heroElement.length > 0 ? heroElement[0] : null
-        if (hero !== null){
+        if (hero !== null) {
             // find slope and fire projectile in direction here
-            
+            const x1 = hero.element.getBoundingClientRect().x
+            const y1 = hero.element.getBoundingClientRect().y
+            const x2 = this.element.getBoundingClientRect().x
+            const y2 = this.element.getBoundingClientRect().y
+
+
+
+            const projElem = document.createElement('div')
+            projElem.classList.add('projectile')
+            projElem.setAttribute('style', `
+            position: absolute;
+            right: ${x2 + (this.enemy.getBoundingClientRect().width / 2)}px;
+            top: ${y2 + (this.enemy.getBoundingClientRect().height / 2)}px;
+            `)
+            document.body.appendChild(projElem)
+
+            const projectileObject = new projectile(projElem)
+
+
+
+            const travelTime = setInterval(() => {
+                const currTop = parseInt(projectileObject.element.style.top.split('px')[0])
+                const currRight = parseInt(projectileObject.element.style.right.split('px')[0])
+                
+                const rise = y2 - y1
+                const run = x2 - x1
+
+                const Y = - rise / 60
+                const X =  run / 60
+
+
+
+                const newTop = currTop + Y + 'px'
+                const newRight = currRight + X + 'px'
+
+                projElem.style.top = newTop
+                projElem.style.right = newRight
+
+
+
+
+            }, 50)
+
+
+
         }
     }
 
