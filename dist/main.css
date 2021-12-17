@@ -9,7 +9,9 @@ body{
 
 .start-screen__bg {
     height: 100%;
-    background-color: blue;
+    background:url(./assets/NES\ -\ The\ Legend\ of\ Zelda\ -\ Title\ Screen\ Alt.png);
+    background-size:cover;
+    background-position: center center;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,7 +22,7 @@ body{
 }
 
 .spawn-screen {
-    background-color: grey;
+    background-color: #fcd8a8;
 }
 
 .screen {
@@ -29,18 +31,86 @@ body{
 }
 
 .hero {
-    height: 200px;
-    width: 200px;
-    border-radius: 50%;
-    background-color:red;
+    height: 150px;
+    width: 80px;
     position: absolute;
     transition: all linear;
-
+    background-size: contain;
 }
 
-.enemy {
-    height: 200px;
-    width: 200px;
+.hero-attackX {
+    height: 150px;
+    width: 115px !important;
+    position: absolute;
+    transition: all linear;
+    background-size: contain;
+}
+
+.front1 {
+    background-image: url(./assets/front1.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+.front2{
+    background-image: url(./assets/front2.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+.back1{
+    background-image: url(./assets/back1.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+.back2{
+    background-image: url(./assets/back2.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+.right1{
+    background-image: url(./assets/right1.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+.right2{
+    background-image: url(./assets/right2.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+.left1{
+    background-image: url(./assets/left1.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+.left2{
+    background-image: url(./assets/left2.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+.attacktop{
+    background-image: url(./assets/attacktop.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+.attackbottom{
+    background-image: url(./assets/attackbottom.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+
+.attackright{
+    background-image: url(./assets/attackright.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+.attackleft{
+    background-image: url(./assets/attackleft.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+
+.enemy { 
+    height: 100px;
+    width: 50px;
     border-radius: 50%;
     background-color:purple;
     position: absolute;
@@ -48,7 +118,7 @@ body{
 
 .wall {
     position: absolute;
-    background-color: blue;
+    background-image: url(./assets/rocks.png)
 }
 
 .projectile {

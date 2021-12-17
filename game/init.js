@@ -9,7 +9,7 @@ export default function(){
     StartScreenEvent((e) => {
         game.innerHTML = SpawnScreenMarkup
         paintSpawn(() => {
-            console.log('finished painting')
+           
         })
     })
 

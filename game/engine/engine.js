@@ -8,6 +8,7 @@ export class collider {
         this.momentumY = null
         this.collision = false
         this.isHero = false
+        this.movementTicker = 1
         this.facingDirection = null
         this.instanceIndex = collider.colliderList.push({
             element: DOMELEMENT,
@@ -101,6 +102,7 @@ export class collider {
 
 
     move = (direction, isPositive) => {
+        this.movementTicker = this.movementTicker === 1 ? 2 : 1
         let current = parseInt(this.element.style[direction].replace('px', ''))
         let newVal = isPositive ? current += 8 : current -= 8
         let newValPx = newVal + 'px'
@@ -115,26 +117,51 @@ export class collider {
         }
     }
 
+    removeMovementClasses = (element) => {
+        const classes = ['right','left','back','front', 'attacktop','attackbottom','attackright','attackleft','hero-attackX']
+        classes.forEach(item => {
+            element.classList.remove(item)
+            element.classList.remove(item + '1')
+            element.classList.remove(item + '2')
+        })
+    }
+
 
     moveLeft = () => {
         this.facingDirection = 'left'
         this.momentumX = 'right'
         this.move('right', true)
+        if(this.isHero) {
+            this.removeMovementClasses(this.element)
+            this.element.classList.add('left' + this.movementTicker.toString())
+        }
     }
     moveRight = () => {
         this.facingDirection = 'right'
         this.momentumX = 'right'
         this.move('right', false)
+        if(this.isHero) {
+            this.removeMovementClasses(this.element)
+            this.element.classList.add('right' + this.movementTicker.toString())
+        }
     }
     moveUp = () => {
         this.facingDirection = 'top'
         this.momentumY = 'top'
         this.move('top', false)
+        if(this.isHero) {
+            this.removeMovementClasses(this.element)
+            this.element.classList.add('back' + this.movementTicker.toString())
+        }
     }
     moveDown = () => {
         this.facingDirection = 'bottom'
         this.momentumY = 'top'
         this.move('top', true)
+        if(this.isHero) {
+            this.removeMovementClasses(this.element)
+            this.element.classList.add('front' + this.movementTicker.toString())
+        }
     }
 
 
@@ -164,31 +191,42 @@ export class hero extends collider {
         this.type = 'hero'
     }
 
+    
+
     attack = () => {
         const direction = this.getFacingDirection()
         console.log(direction)
         const { x, y } = this.hero.getBoundingClientRect()
         console.log(x, y)
         const weaponElem = document.createElement('div')
-        weaponElem.style.width = '200px'
-        weaponElem.style.height = '150px'
-        weaponElem.style.backgroundColor = 'green'
+        weaponElem.style.width = '80px'
+        weaponElem.style.height = '80px'
         weaponElem.style.position = 'absolute'
         document.body.appendChild(weaponElem)
         const weapon = new attackWeapon(weaponElem)
 
         switch (direction) {
             case 'top':
-                weapon.setPositionPX(window.innerWidth - x - 200, y - 100)
+                weapon.setPositionPX(window.innerWidth - x - 60, y - 80)
+                this.removeMovementClasses(this.hero)
+                this.hero.classList.add('attacktop')
                 break
             case 'bottom':
-                weapon.setPositionPX(window.innerWidth - x - 200, y + 150)
+                weapon.setPositionPX(window.innerWidth - x - 60  , y + 80)
+                this.removeMovementClasses(this.hero)
+                this.hero.classList.add('attackbottom')
                 break
             case 'right':
-                weapon.setPositionPX(window.innerWidth - x - 300, y + 25)
+                weapon.setPositionPX(window.innerWidth - x - 130, y)
+                this.removeMovementClasses(this.hero)
+                this.hero.classList.add('hero-attackX')
+                this.hero.classList.add('attackright')
                 break
             case 'left':
-                weapon.setPositionPX(window.innerWidth - x - 100, y + 25)
+                this.removeMovementClasses(this.hero)
+                this.hero.classList.add('hero-attackX')
+                this.hero.classList.add('attackleft')
+                weapon.setPositionPX(window.innerWidth - x, y)
                 break
         }
 
@@ -214,7 +252,15 @@ export class hero extends collider {
 
 
 
-        setTimeout(() => weapon.destroyInstance(), 200)
+        setTimeout(() => {
+            this.removeMovementClasses(this.hero)
+            let returnDirection
+            if (direction === 'top') returnDirection = 'back'
+            else if (direction === 'bottom') returnDirection = 'front'
+            else returnDirection = direction
+            this.hero.classList.add(returnDirection + this.movementTicker)
+            weapon.destroyInstance()
+        }, 200)
 
     }
 }
@@ -243,8 +289,6 @@ export class enemy extends collider {
             const x2 = this.element.getBoundingClientRect().x
             const y2 = this.element.getBoundingClientRect().y
 
-
-
             const projElem = document.createElement('div')
             projElem.classList.add('projectile')
             projElem.setAttribute('style', `
@@ -256,8 +300,6 @@ export class enemy extends collider {
 
             const projectileObject = new projectile(projElem)
 
-
-
             const travelTime = setInterval(() => {
                 const currTop = parseInt(projectileObject.element.style.top.split('px')[0])
                 const currRight = parseInt(projectileObject.element.style.right.split('px')[0])
@@ -268,16 +310,29 @@ export class enemy extends collider {
                 const Y = - rise / 60
                 const X =  run / 60
 
-
-
                 const newTop = currTop + Y + 'px'
                 const newRight = currRight + X + 'px'
 
                 projElem.style.top = newTop
                 projElem.style.right = newRight
 
+                let rect1 = hero.element.getBoundingClientRect()
+                let rect2 = projElem.getBoundingClientRect()
 
+                let overlap = !(
+                    rect1.top > rect2.bottom ||
+                    rect1.right < rect2.left ||
+                    rect1.bottom < rect2.top ||
+                    rect1.left > rect2.right
+                );
 
+                console.log(overlap)
+                if (overlap) {
+
+                    projectileObject.destroyInstance()
+                    clearInterval(travelTime)
+                }
+            
 
             }, 50)
 

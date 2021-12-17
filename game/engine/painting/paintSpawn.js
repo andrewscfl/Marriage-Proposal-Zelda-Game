@@ -6,7 +6,7 @@ export default function (callback) {
 
     const heroElement = document.createElement('div')
     heroElement.classList.add('hero')
-    heroElement.classList.add('forward-view')
+    heroElement.classList.add('front1')
 
     const enemyElement = document.createElement('div')
     enemyElement.classList.add('enemy')
