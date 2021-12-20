@@ -7,6 +7,24 @@ body{
     margin: 0;
 }
 
+.rock {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+}
+
+.rock1 {
+    background-image: url(./assets/rock1.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+
+.rock2 {
+    background-image: url(./assets/rock2.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+}
+
 .start-screen__bg {
     height: 100%;
     background:url(./assets/NES\ -\ The\ Legend\ of\ Zelda\ -\ Title\ Screen\ Alt.png);
@@ -21,7 +39,7 @@ body{
     padding: 30px;
 }
 
-.spawn-screen {
+.spawn-screen, .screen1 {
     background-color: #fcd8a8;
 }
 
@@ -31,7 +49,7 @@ body{
 }
 
 .hero {
-    height: 150px;
+    height: 100px;
     width: 80px;
     position: absolute;
     transition: all linear;
@@ -109,11 +127,17 @@ body{
 }
 
 .enemy { 
-    height: 100px;
-    width: 50px;
-    border-radius: 50%;
-    background-color:purple;
+    height: 70px;
+    width: 70px;
+    background-image: url(./assets/octorok1.png);
+    background-repeat: no-repeat;
+    background-size:contain;
     position: absolute;
+    background-position: center center;
+}
+
+.enemycharge {
+    background-image: url(./assets/octorok2.png) !important;
 }
 
 .wall {
@@ -122,11 +146,18 @@ body{
 }
 
 .projectile {
-    background-color: green;
+    background-image: url(./assets/projectile.png);
+    background-size: cover;
     width: 20px;
     height: 20px;
     border-radius: 50%;
     transition: all linear;
+}
+
+.teleporter {
+    background-image: url(./assets/teleport.png);
+    background-size: cover;
+
 }
 
 body{
