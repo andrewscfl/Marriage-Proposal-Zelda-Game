@@ -1,9 +1,10 @@
 //spawns hero
-import { barrier, collider, hero, enemy, teleporter} from '../engine'
+import { barrier, collider, hero, enemy, teleporter, teleporterBack } from '../engine'
 import BindHeroMovement from '../../input/eventlisteners/hero'
 
-export default function () {
+let screenToPaint = 1
 
+const paintScreen1 = () => {
     const heroElement = document.createElement('div')
     heroElement.classList.add('hero')
     heroElement.classList.add('front1')
@@ -42,7 +43,7 @@ export default function () {
 
     const teleporterWall = document.createElement('div')
     teleporterWall.classList.add('teleporter')
-    teleporterWall.setAttribute('style',`
+    teleporterWall.setAttribute('style', `
     width: ${window.innerWidth}px;
     top: 0px;
     height: 30px;
@@ -73,7 +74,7 @@ export default function () {
     top: ${window.innerHeight / 1.5}px;
     `)
 
-    const spriteList = [rock1, rock2, rock3,teleporterWall, enemyElement, enemyElement2, heroElement, wallElementOne, wallElementTwo, wallElementThree]
+    const spriteList = [heroElement, rock1, rock2, rock3, teleporterWall, enemyElement, enemyElement2, wallElementOne, wallElementTwo, wallElementThree]
     spriteList.forEach(item => document.body.appendChild(item))
 
 
@@ -90,9 +91,109 @@ export default function () {
     new BindHeroMovement(heroObject)
 
     heroObject.setPositionPX(window.innerWidth / 2 - (heroElement.getBoundingClientRect().width / 2), window.innerHeight - (heroElement.getBoundingClientRect().height) - 100)
-    enemyObject.setPositionPX(window.innerWidth/2 - (enemyElement.getBoundingClientRect().width /2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 400 )
-    enemyObject2.setPositionPX(window.innerWidth- 200 - (enemyElement.getBoundingClientRect().width /2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 600 )
+    enemyObject.setPositionPX(window.innerWidth / 2 - (enemyElement.getBoundingClientRect().width / 2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 400)
+    enemyObject2.setPositionPX(window.innerWidth - 200 - (enemyElement.getBoundingClientRect().width / 2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 600)
+}
+
+const paintScreen2 = () => {
+    collider.intervalList.forEach(item => clearInterval(item))
+    collider.colliderList = []
+
+    const heroElement = document.createElement('div')
+    heroElement.classList.add('hero')
+    heroElement.classList.add('front1')
+    document.body.appendChild(heroElement)
+
+    const teleporterBackElem = document.createElement('div')
+    teleporterBackElem.classList.add('teleporter')
+    teleporterBackElem.setAttribute('style', `
+    width: ${window.innerWidth}px;
+    height: 30px;
+    bottom: 0;
+    position: absolute;
+    `)
+
+    const wallElementTwo = document.createElement('div')
+    wallElementTwo.classList.add('grasswall')
+    wallElementTwo.setAttribute('style', `
+    width: 30px;
+    height: ${window.innerHeight}px;
+    right: 0;
+    top: 0;
+    position: absolute;
+    background-image: url(./assets/grass.png);
+    `)
+
+    const wallElementThree = document.createElement('div')
+    wallElementThree.classList.add('grasswall')
+    wallElementThree.setAttribute('style', `
+    width: ${window.innerWidth}px;
+    height: 30px;
+    top: 0;
+    position: absolute;
+    background-image: url(./assets/grass.png);
+    `)
+
+    const spriteList = [ heroElement, teleporterBackElem, wallElementTwo, wallElementThree ]
+    spriteList.forEach(item => document.body.appendChild(item))
+    new teleporterBack(teleporterBackElem)
+    new collider(wallElementTwo)
+    new collider(wallElementTwo)
+    const heroObject = new hero(heroElement)
+    new BindHeroMovement(heroObject)
+    heroObject.setPositionPX(window.innerWidth / 2 - (heroElement.getBoundingClientRect().width / 2), window.innerHeight - (heroElement.getBoundingClientRect().height) - 100)
+
+}
 
 
-    
+
+export default function () {
+    paintScreen1()
+
+    document.addEventListener('change-screen', (event) => {
+        const colliderList = event.detail.cl
+        screenToPaint++
+        
+        switch (screenToPaint) {
+            case 1:
+                colliderList.forEach(item => {
+                    item.element.remove()
+                })
+                paintScreen1()
+                
+                break
+            case 2:
+                console.log('ran this block')
+                colliderList.forEach(item => {
+                    item.element.remove()
+                })
+                paintScreen2()
+                break
+            
+        }
+    })
+
+    document.addEventListener('change-screen-back', (event) => {
+        const colliderList = event.detail.cl
+        screenToPaint--
+        
+        switch (screenToPaint) {
+            case 1:
+                colliderList.forEach(item => {
+                    item.element.remove()
+                })
+                paintScreen1()
+                break
+            case 2:
+                console.log('ran this block')
+                colliderList.forEach(item => {
+                    item.element.remove()
+                })
+                paintScreen2()
+                break
+            
+    }
+})
+
+
 }

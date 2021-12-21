@@ -12,6 +12,7 @@ export class collider {
         this.destroyed = false
         this.movementTicker = 1
         this.facingDirection = null
+        this.currentScreen = 1
         this.instanceIndex = collider.colliderList.push({
             element: DOMELEMENT,
             instance: this,
@@ -28,9 +29,7 @@ export class collider {
         collider.intervalList.forEach(inter => clearInterval(inter))
         collider.colliderList.forEach((item,index) => {
             collider.colliderList.splice(index, 1)
-
         })
-
     }
 
 
@@ -93,10 +92,15 @@ export class collider {
                     const inst1 = collider.colliderList[i].instance
                     const inst2 = collider.colliderList[x].instance
                     if ((inst1.collision && inst2.collision) && (inst1.type === 'hero' && inst2.type === 'teleport') || (inst1.type === 'teleport' && inst2.type === 'hero')) {
+                        const event = new CustomEvent('change-screen', { "detail": { "cl": collider.colliderList } })
+                        document.dispatchEvent(event)
+                    }
 
-                        const heroElement = collider.colliderList.filter(item => item.instance !== undefined ? item.instance.getHeroStatus() : false)
-                        const hero = heroElement.length > 0 ? heroElement[0] : null
-                        const event = new CustomEvent('change-screen', { "detail": { "hero": hero } })
+                    console.log(inst1.type, inst2.type)
+
+                    if ((inst1.collision && inst2.collision) && (inst1.type === 'hero' && inst2.type === 'teleportBack') || (inst1.type === 'teleportBack' && inst2.type === 'hero')) {
+                        console.log('hit move back')
+                        const event = new CustomEvent('change-screen-back', { "detail": { "cl": collider.colliderList } })
                         document.dispatchEvent(event)
                     }
 
@@ -318,14 +322,17 @@ export class hero extends collider {
 }
 
 export class teleporter extends collider {
-
-    constructor(DOMELEMENT, target) {
+    constructor(DOMELEMENT) {
         super(DOMELEMENT)
-        this.target = target
         this.type = 'teleport'
     }
+}
 
-
+export class teleporterBack extends collider {
+    constructor(DOMELEMENT) {
+        super(DOMELEMENT)
+        this.type = 'teleportBack'
+    }
 }
 
 export class enemy extends collider {
