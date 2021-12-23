@@ -89,20 +89,17 @@ export class collider {
                     collider.colliderList[i].instance.collision = overlap
                     collider.colliderList[x].instance.collision = overlap
 
+                   
+                    
+
                     const inst1 = collider.colliderList[i].instance
                     const inst2 = collider.colliderList[x].instance
                     if ((inst1.collision && inst2.collision) && (inst1.type === 'hero' && inst2.type === 'teleport') || (inst1.type === 'teleport' && inst2.type === 'hero')) {
-                        const event = new CustomEvent('change-screen', { "detail": { "cl": collider.colliderList } })
+                        const teleporterScreenTarget = inst1.type === 'teleport' ? inst1.screen : inst2.screen
+                        const event = new CustomEvent('change-screen', { "detail": { "cl": collider.colliderList, "screen" : teleporterScreenTarget } })
                         document.dispatchEvent(event)
                     }
 
-                    console.log(inst1.type, inst2.type)
-
-                    if ((inst1.collision && inst2.collision) && (inst1.type === 'hero' && inst2.type === 'teleportBack') || (inst1.type === 'teleportBack' && inst2.type === 'hero')) {
-                        console.log('hit move back')
-                        const event = new CustomEvent('change-screen-back', { "detail": { "cl": collider.colliderList } })
-                        document.dispatchEvent(event)
-                    }
 
 
                     if (overlap) {
@@ -141,8 +138,9 @@ export class collider {
         let newValPx = newVal + 'px'
         this.element.style[direction] = newValPx
         collider.checkCollisions()
+        
         if (this.collision) {
-
+            
             let current = parseInt(this.element.style[direction].replace('px', ''))
             let newVal = isPositive ? current -= 8 : current += 8
             let newValPx = newVal + 'px'
@@ -160,13 +158,10 @@ export class collider {
     }
 
     checkTeleport = () => {
-        collider.detectImpact()
-
+        collider.checkCollisions()
         const teleporterArr = collider.colliderList.filter(item => (item.instance !== undefined) ? item.instance.type === 'teleport' : false)
-
         if (teleporterArr.length !== 0) {
             const teleporter = teleporterArr[0]
-
             if (teleporter.collision) {
                 alert('collision with teleporter')
             }
@@ -322,18 +317,13 @@ export class hero extends collider {
 }
 
 export class teleporter extends collider {
-    constructor(DOMELEMENT) {
+    constructor(DOMELEMENT, screen) {
         super(DOMELEMENT)
         this.type = 'teleport'
+        this.screen = screen
     }
 }
 
-export class teleporterBack extends collider {
-    constructor(DOMELEMENT) {
-        super(DOMELEMENT)
-        this.type = 'teleportBack'
-    }
-}
 
 export class enemy extends collider {
     constructor(DOMELEMENT) {
