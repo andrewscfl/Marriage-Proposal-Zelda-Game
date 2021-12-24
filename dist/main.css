@@ -155,8 +155,8 @@ body{
 }
 
 .teleporter {
-    background-image: url(./assets/teleport.png);
-    background-size: cover;
+    background-color:black;
+    box-shadow: 0px 20px 20px black;
 
 }
 
