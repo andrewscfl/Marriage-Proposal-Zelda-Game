@@ -249,7 +249,7 @@ export class hero extends collider {
         weaponElem.style.width = '80px'
         weaponElem.style.height = '80px'
         weaponElem.style.position = 'absolute'
-        document.body.appendChild(weaponElem)
+        document.querySelector('.objects').appendChild(weaponElem)
         const weapon = new attackWeapon(weaponElem)
 
         switch (direction) {
@@ -375,7 +375,7 @@ export class enemy extends collider {
             right: ${window.innerWidth - x2 - (this.enemy.getBoundingClientRect().width / 2)}px;
             top: ${y2 + (this.enemy.getBoundingClientRect().height / 2)}px;
             `)
-                document.body.appendChild(projElem)
+                document.querySelector('.objects').appendChild(projElem)
 
                 const projectileObject = new projectile(projElem)
 

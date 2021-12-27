@@ -98,7 +98,7 @@ const paintScreen1 = () => {
     `)
 
     const spriteList = [heroElement, rock1, rock2, rock3, teleporterElem, enemyElement, enemyElement2, wallElementOne, wallElementTwo, wallElementThree, wallElementPartial1, wallElementPartial2]
-    spriteList.forEach(item => document.body.appendChild(item))
+    spriteList.forEach(item => document.querySelector('.objects').appendChild(item))
 
 
     const heroObject = new hero(heroElement)
@@ -126,7 +126,7 @@ const paintScreen2 = () => {
     const heroElement = document.createElement('div')
     heroElement.classList.add('hero')
     heroElement.classList.add('front1')
-    document.body.appendChild(heroElement)
+    document.querySelector('.objects').appendChild(heroElement)
 
     const teleporterBackElem = document.createElement('div')
     teleporterBackElem.classList.add('teleporter')
@@ -221,14 +221,18 @@ const paintScreen2 = () => {
     const enemyElement2 = document.createElement('div')
     enemyElement2.classList.add('enemy')
 
-    const enemyElement3 = document.createElement('div')
-    enemyElement3.classList.add('enemy')
+   
 
-    const spriteList = [heroElement, enemyElement, enemyElement2,enemyElement3, teleporterBackElem, wallElementTwo, wallElementThree, wallElementPartial1, wallElementPartial2, wallElementPartial3, wallElementPartial4, teleporterElem]
-    spriteList.forEach(item => document.body.appendChild(item))
+    const spriteList = [heroElement, enemyElement, enemyElement2, teleporterBackElem, wallElementTwo, wallElementThree, wallElementPartial1, wallElementPartial2, wallElementPartial3, wallElementPartial4, teleporterElem]
+    spriteList.forEach(item => document.querySelector('.objects').appendChild(item))
 
     const heroObject = new hero(heroElement)
+
+    const enemyObject = new enemy(enemyElement)
+    const enemyObject2 = new enemy(enemyElement2)
+
     new teleporter(teleporterBackElem, 1)
+
     new collider(wallElementTwo)
     new collider(wallElementThree)
     new collider(wallElementPartial1)
@@ -236,14 +240,11 @@ const paintScreen2 = () => {
     new collider(wallElementPartial3)
     new collider(wallElementPartial4)
     new teleporter(teleporterElem, 3)
-    const enemyObject = new enemy(enemyElement)
-    const enemyObject2 = new enemy(enemyElement2)
-    const enemyObject3 = new enemy(enemyElement3)
+    
 
     heroObject.setPositionPX(window.innerWidth / 2 - (heroElement.getBoundingClientRect().width / 2), window.innerHeight - (heroElement.getBoundingClientRect().height) - 100)
     enemyObject.setPositionPX(window.innerWidth / 2 - (enemyElement.getBoundingClientRect().width / 2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 400)
     enemyObject2.setPositionPX(window.innerWidth - 200 - (enemyElement.getBoundingClientRect().width / 2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 600)
-    enemyObject3.setPositionPX(window.innerWidth - 300 - (enemyElement.getBoundingClientRect().width / 2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 700)
 
     new BindHeroMovement(heroObject)
 
@@ -255,7 +256,7 @@ const paintScreen3 = () => {
     const heroElement = document.createElement('div')
     heroElement.classList.add('hero')
     heroElement.classList.add('front1')
-    document.body.appendChild(heroElement)
+    document.querySelector('.objects').appendChild(heroElement)
 
     const teleporterBackElem = document.createElement('div')
     teleporterBackElem.classList.add('teleporter')
@@ -353,7 +354,7 @@ const paintScreen3 = () => {
     `)
 
     const spriteList = [heroElement, teleporterBackElem, wallElementTwo, wallElementThree, wallElementFour, wallElementPartial1, wallElementPartial2, wallElementPartial3, wallElementPartial4, teleporterElem]
-    spriteList.forEach(item => document.body.appendChild(item))
+    spriteList.forEach(item => document.querySelector('.objects').appendChild(item))
 
     const heroObject = new hero(heroElement)
     new teleporter(teleporterBackElem, 2)
@@ -390,14 +391,17 @@ export default function () {
                     item.element.remove()
                 })
                 collider.colliderList = []
+                document.querySelector('.objects').innerHTML = ''
                 paintScreen1()
                 break
             case 2:
                 console.log('ran this block')
+                
                 colliderList.forEach(item => {
                     item.element.remove()
                 })
                 collider.colliderList = []
+                document.querySelector('.objects').innerHTML = ''
                 paintScreen2()
                 break
             case 3:
@@ -406,6 +410,7 @@ export default function () {
                     item.element.remove()
                 })
                 collider.colliderList = []
+                document.querySelector('.objects').innerHTML = ''
                 paintScreen3()
 
         }
