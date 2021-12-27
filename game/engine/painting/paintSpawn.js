@@ -6,8 +6,7 @@ let screenToPaint = 1
 
 const paintScreen1 = () => {
 
-    document.querySelector('.audio').setAttribute('src', './assets/main.mp3')
-    document.querySelector('.audio').play()
+    
 
 
     const heroElement = document.createElement('div')

@@ -144,6 +144,7 @@ body{
     background-size:contain;
     position: absolute;
     background-position: center center;
+    z-index: 999999;
 }
 
 .enemycharge {
