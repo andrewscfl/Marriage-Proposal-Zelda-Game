@@ -3,11 +3,10 @@ import { boss ,barrier, collider, hero, enemy, teleporter } from '../engine'
 import BindHeroMovement from '../../input/eventlisteners/hero'
 
 let screenToPaint = 1
+const gameSizeX = document.querySelector('.game').offsetWidth
+const gameSizeY = 991
 
 const paintScreen1 = () => {
-
-    
-
 
     const heroElement = document.createElement('div')
     heroElement.classList.add('hero')
@@ -22,7 +21,7 @@ const paintScreen1 = () => {
     const wallElementOne = document.createElement('div')
     wallElementOne.classList.add('wall')
     wallElementOne.setAttribute('style', `
-    width: ${window.innerWidth}px;
+    width: ${gameSizeX}px;
     bottom: 0px;
     height: 30px;
     `);
@@ -31,7 +30,7 @@ const paintScreen1 = () => {
     wallElementTwo.classList.add('wall')
     wallElementTwo.setAttribute('style', `
     width: 30px;
-    height: ${window.innerHeight}px;
+    height: ${gameSizeY}px;
     left: 0;
     top: 0;
     `)
@@ -42,14 +41,14 @@ const paintScreen1 = () => {
     width: 30px;
     right: 0;
     top: 0;
-    height: ${window.innerHeight}px
+    height: ${gameSizeY}px
     `)
 
     const teleporterElem = document.createElement('div')
     teleporterElem.classList.add('teleporter')
     teleporterElem.setAttribute('style', `
-    width: ${window.innerWidth / 3}px;
-    right: ${window.innerWidth / 3}px;
+    width: ${gameSizeX / 3 + 20}px;
+    right: ${gameSizeX / 3}px;
     height: 30px;
     top: 0;
     position: absolute;
@@ -58,7 +57,7 @@ const paintScreen1 = () => {
     const wallElementPartial1 = document.createElement('div')
     wallElementPartial1.classList.add('grasswall')
     wallElementPartial1.setAttribute('style', `
-    width: ${window.innerWidth / 3}px;
+    width: ${gameSizeX / 3}px;
     right: 0px;
     height: 30px;
     top: 0;
@@ -69,7 +68,7 @@ const paintScreen1 = () => {
     const wallElementPartial2 = document.createElement('div')
     wallElementPartial2.classList.add('grasswall')
     wallElementPartial2.setAttribute('style', `
-    width: ${window.innerWidth / 3}px;
+    width: ${gameSizeX / 3}px;
     left: 0px;
     height: 30px;
     top: 0;
@@ -81,24 +80,24 @@ const paintScreen1 = () => {
     rock1.classList.add('rock1')
     rock1.classList.add('rock')
     rock1.setAttribute('style', `
-    right: ${window.innerWidth / 3}px;
-    top: ${window.innerHeight / 3}px;
+    right: ${gameSizeX / 3}px;
+    top: ${gameSizeY / 3}px;
     `)
 
     const rock2 = document.createElement('div')
     rock2.classList.add('rock1')
     rock2.classList.add('rock')
     rock2.setAttribute('style', `
-    right: ${window.innerWidth / 1.5}px;
-    top: ${window.innerHeight / 1.5}px;
+    right: ${gameSizeX / 1.5}px;
+    top: ${gameSizeY / 1.5}px;
     `)
 
     const rock3 = document.createElement('div')
     rock3.classList.add('rock2')
     rock3.classList.add('rock')
     rock3.setAttribute('style', `
-    right: ${window.innerWidth / 3}px;
-    top: ${window.innerHeight / 1.5}px;
+    right: ${gameSizeX / 3}px;
+    top: ${gameSizeY / 1.5}px;
     `)
 
     const spriteList = [heroElement, rock1, rock2, rock3, teleporterElem, enemyElement, enemyElement2, wallElementOne, wallElementTwo, wallElementThree, wallElementPartial1, wallElementPartial2]
@@ -119,9 +118,9 @@ const paintScreen1 = () => {
     new teleporter(teleporterElem, 2)
     new BindHeroMovement(heroObject)
 
-    heroObject.setPositionPX(window.innerWidth / 2 - (heroElement.getBoundingClientRect().width / 2), window.innerHeight - (heroElement.getBoundingClientRect().height) - 100)
-    enemyObject.setPositionPX(window.innerWidth / 2 - (enemyElement.getBoundingClientRect().width / 2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 400)
-    enemyObject2.setPositionPX(window.innerWidth - 200 - (enemyElement.getBoundingClientRect().width / 2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 600)
+    heroObject.setPositionPX(gameSizeX / 2 - (heroElement.getBoundingClientRect().width / 2), gameSizeY - (heroElement.getBoundingClientRect().height) - 100)
+    enemyObject.setPositionPX(gameSizeX / 2 - (enemyElement.getBoundingClientRect().width / 2), gameSizeY - (enemyElement.getBoundingClientRect().height) - 400)
+    enemyObject2.setPositionPX(gameSizeX - 200 - (enemyElement.getBoundingClientRect().width / 2), gameSizeY - (enemyElement.getBoundingClientRect().height) - 600)
 }
 
 const paintScreen2 = () => {
@@ -135,8 +134,8 @@ const paintScreen2 = () => {
     const teleporterBackElem = document.createElement('div')
     teleporterBackElem.classList.add('teleporter')
     teleporterBackElem.setAttribute('style', `
-    width: ${window.innerWidth / 3}px;
-    right: ${window.innerWidth / 3}px;
+    width: ${gameSizeX / 3 + 20}px;
+    right: ${gameSizeX / 3}px;
     height: 30px;
     bottom: 0;
     position: absolute;
@@ -145,7 +144,7 @@ const paintScreen2 = () => {
     const wallElementPartial1 = document.createElement('div')
     wallElementPartial1.classList.add('grasswall')
     wallElementPartial1.setAttribute('style', `
-    width: ${window.innerWidth / 3}px;
+    width: ${gameSizeX / 3}px;
     right: 0;
     height: 30px;
     bottom: 0;
@@ -156,7 +155,7 @@ const paintScreen2 = () => {
     const wallElementPartial2 = document.createElement('div')
     wallElementPartial2.classList.add('grasswall')
     wallElementPartial2.setAttribute('style', `
-    width: ${window.innerWidth / 3}px;
+    width: ${gameSizeX / 3}px;
     left: 0;
     height: 30px;
     bottom: 0;
@@ -167,7 +166,7 @@ const paintScreen2 = () => {
     const wallElementPartial3 = document.createElement('div')
     wallElementPartial3.classList.add('grasswall')
     wallElementPartial3.setAttribute('style', `
-    height: ${window.innerHeight / 3}px;
+    height: ${gameSizeY / 3}px;
     top: 0;
     left: 0;
     width: 30px;
@@ -179,7 +178,7 @@ const paintScreen2 = () => {
     const wallElementPartial4 = document.createElement('div')
     wallElementPartial4.classList.add('grasswall')
     wallElementPartial4.setAttribute('style', `
-    height: ${window.innerHeight / 3}px;
+    height: ${gameSizeY / 3}px;
     left: 0;
     width: 30px;
     bottom: 0;
@@ -190,8 +189,8 @@ const paintScreen2 = () => {
     const teleporterElem = document.createElement('div')
     teleporterElem.classList.add('teleporter')
     teleporterElem.setAttribute('style', `
-    height: ${window.innerHeight / 3}px;
-    top: ${window.innerHeight / 3}px;
+    height: ${gameSizeY / 3 + 20}px;
+    top: ${gameSizeY / 3}px;
     width: 30px;
     position: absolute;
     `)
@@ -202,7 +201,7 @@ const paintScreen2 = () => {
     wallElementTwo.classList.add('grasswall')
     wallElementTwo.setAttribute('style', `
     width: 30px;
-    height: ${window.innerHeight}px;
+    height: ${gameSizeY}px;
     right: 0;
     top: 0;
     position: absolute;
@@ -212,7 +211,7 @@ const paintScreen2 = () => {
     const wallElementThree = document.createElement('div')
     wallElementThree.classList.add('grasswall')
     wallElementThree.setAttribute('style', `
-    width: ${window.innerWidth}px;
+    width: ${gameSizeX}px;
     height: 30px;
     top: 0;
     position: absolute;
@@ -246,9 +245,9 @@ const paintScreen2 = () => {
     new teleporter(teleporterElem, 3)
     
 
-    heroObject.setPositionPX(window.innerWidth / 2 - (heroElement.getBoundingClientRect().width / 2), window.innerHeight - (heroElement.getBoundingClientRect().height) - 100)
-    enemyObject.setPositionPX(window.innerWidth / 2 - (enemyElement.getBoundingClientRect().width / 2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 400)
-    enemyObject2.setPositionPX(window.innerWidth - 200 - (enemyElement.getBoundingClientRect().width / 2), window.innerHeight - (enemyElement.getBoundingClientRect().height) - 600)
+    heroObject.setPositionPX(gameSizeX / 2 - (heroElement.getBoundingClientRect().width / 2), gameSizeY - (heroElement.getBoundingClientRect().height) - 100)
+    enemyObject.setPositionPX(gameSizeX / 2 - (enemyElement.getBoundingClientRect().width / 2), gameSizeY - (enemyElement.getBoundingClientRect().height) - 400)
+    enemyObject2.setPositionPX(gameSizeX - 200 - (enemyElement.getBoundingClientRect().width / 2), gameSizeY - (enemyElement.getBoundingClientRect().height) - 600)
 
     new BindHeroMovement(heroObject)
 
@@ -272,8 +271,8 @@ const paintScreen3 = () => {
     const teleporterBackElem = document.createElement('div')
     teleporterBackElem.classList.add('teleporter')
     teleporterBackElem.setAttribute('style', `
-    height: ${window.innerHeight / 3}px;
-    top: ${window.innerHeight / 3}px;
+    height: ${gameSizeY / 3 + 20}px;
+    top: ${gameSizeY / 3}px;
     width: 30px;
     right: 0;
     position: absolute;
@@ -282,7 +281,7 @@ const paintScreen3 = () => {
     const wallElementPartial1 = document.createElement('div')
     wallElementPartial1.classList.add('grasswall')
     wallElementPartial1.setAttribute('style', `
-    height: ${window.innerHeight / 3}px;
+    height: ${gameSizeY / 3}px;
     top: 0;
     width: 30px;
     right: 0;
@@ -293,7 +292,7 @@ const paintScreen3 = () => {
     const wallElementPartial2 = document.createElement('div')
     wallElementPartial2.classList.add('grasswall')
     wallElementPartial2.setAttribute('style', `
-    height: ${window.innerHeight / 3}px;
+    height: ${gameSizeY / 3}px;
     bottom: 0;
     width: 30px;
     right: 0;
@@ -304,7 +303,7 @@ const paintScreen3 = () => {
     const wallElementPartial3 = document.createElement('div')
     wallElementPartial3.classList.add('grasswall')
     wallElementPartial3.setAttribute('style', `
-    height: ${window.innerHeight / 3}px;
+    height: ${gameSizeY / 3}px;
     top: 0;
     left: 0;
     width: 30px;
@@ -316,7 +315,7 @@ const paintScreen3 = () => {
     const wallElementPartial4 = document.createElement('div')
     wallElementPartial4.classList.add('grasswall')
     wallElementPartial4.setAttribute('style', `
-    height: ${window.innerHeight / 3}px;
+    height: ${gameSizeY / 3}px;
     left: 0;
     width: 30px;
     bottom: 0;
@@ -327,8 +326,8 @@ const paintScreen3 = () => {
     const teleporterElem = document.createElement('div')
     teleporterElem.classList.add('teleporter')
     teleporterElem.setAttribute('style', `
-    height: ${window.innerHeight / 3}px;
-    top: ${window.innerHeight / 3}px;
+    height: ${gameSizeY / 3 + 20}px;
+    top: ${gameSizeY / 3}px;
     width: 30px;
     position: absolute;
     `)
@@ -337,7 +336,7 @@ const paintScreen3 = () => {
     wallElementTwo.classList.add('grasswall')
     wallElementTwo.setAttribute('style', `
     width: 30px;
-    height: ${window.innerHeight / 3}px;
+    height: ${gameSizeY / 3}px;
     left: 0;
     top: 0;
     position: absolute;
@@ -347,7 +346,7 @@ const paintScreen3 = () => {
     const wallElementThree = document.createElement('div')
     wallElementThree.classList.add('grasswall')
     wallElementThree.setAttribute('style', `
-    width: ${window.innerWidth}px;
+    width: ${gameSizeX}px;
     height: 30px;
     top: 0;
     position: absolute;
@@ -357,7 +356,7 @@ const paintScreen3 = () => {
     const wallElementFour = document.createElement('div')
     wallElementFour.classList.add('grasswall')
     wallElementFour.setAttribute('style', `
-    width: ${window.innerWidth}px;
+    width: ${gameSizeX}px;
     height: 30px;
     bottom: 0;
     position: absolute;
@@ -379,8 +378,8 @@ const paintScreen3 = () => {
     new collider(wallElementFour)
     new teleporter(teleporterElem, 3)
  
-    heroObject.setPositionPX(window.innerWidth / 4 - (heroElement.getBoundingClientRect().width / 2), window.innerHeight / 2 - (heroElement.getBoundingClientRect().height))
-    enemyObject.setPositionPX(window.innerWidth / 2 - (heroElement.getBoundingClientRect().width / 2), window.innerHeight / 2 - (heroElement.getBoundingClientRect().height))
+    heroObject.setPositionPX(gameSizeX / 4 - (heroElement.getBoundingClientRect().width / 2), gameSizeY / 2 - (heroElement.getBoundingClientRect().height))
+    enemyObject.setPositionPX(gameSizeX / 2 - (heroElement.getBoundingClientRect().width / 2), gameSizeY / 2 - (heroElement.getBoundingClientRect().height))
 
     new BindHeroMovement(heroObject)
 }

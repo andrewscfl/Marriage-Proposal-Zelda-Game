@@ -1,3 +1,7 @@
+const gameSizeX = document.querySelector('.game').clientWidth
+const gameSizeY = 991
+
+
 export class collider {
     static colliderList = []
     static intervalList = []
@@ -254,17 +258,17 @@ export class hero extends collider {
 
         switch (direction) {
             case 'top':
-                weapon.setPositionPX(window.innerWidth - x - 60, y - 80)
+                weapon.setPositionPX(gameSizeX - x - 60, y - 80)
                 this.removeMovementClasses(this.hero)
                 this.hero.classList.add('attacktop')
                 break
             case 'bottom':
-                weapon.setPositionPX(window.innerWidth - x - 60, y + 80)
+                weapon.setPositionPX(gameSizeX - x - 60, y + 80)
                 this.removeMovementClasses(this.hero)
                 this.hero.classList.add('attackbottom')
                 break
             case 'right':
-                weapon.setPositionPX(window.innerWidth - x - 130, y)
+                weapon.setPositionPX(gameSizeX - x - 130, y)
                 this.removeMovementClasses(this.hero)
                 this.hero.classList.add('hero-attackX')
                 this.hero.classList.add('attackright')
@@ -273,10 +277,10 @@ export class hero extends collider {
                 this.removeMovementClasses(this.hero)
                 this.hero.classList.add('hero-attackX')
                 this.hero.classList.add('attackleft')
-                weapon.setPositionPX(window.innerWidth - x, y)
+                weapon.setPositionPX(gameSizeX - x, y)
                 break
             default:
-                weapon.setPositionPX(window.innerWidth - x - 60, y + 80)
+                weapon.setPositionPX(gameSizeX - x - 60, y + 80)
                 this.removeMovementClasses(this.hero)
                 this.hero.classList.add('attackbottom')
                 break
@@ -373,7 +377,7 @@ export class enemy extends collider {
                 projElem.classList.add('projectile')
                 projElem.setAttribute('style', `
             position: absolute;
-            right: ${window.innerWidth - x2 - (this.enemy.getBoundingClientRect().width / 2)}px;
+            right: ${gameSizeX - x2 - (this.enemy.getBoundingClientRect().width / 2)}px;
             top: ${y2 + (this.enemy.getBoundingClientRect().height / 2)}px;
             `)
                 document.querySelector('.objects').appendChild(projElem)
@@ -390,8 +394,8 @@ export class enemy extends collider {
                     const Y = - rise / 60
                     const X = run / 60
 
-                    const newTop = currTop + Y + 'px'
-                    const newRight = currRight + X + 'px'
+                    const newTop = currTop + Y * 3 + 'px'
+                    const newRight = currRight + X * 3 + 'px'
 
                     projElem.style.top = newTop
                     projElem.style.right = newRight
@@ -407,7 +411,7 @@ export class enemy extends collider {
                     );
 
 
-                    if (overlap || currTop > window.innerHeight || currRight > window.innerWidth) {
+                    if (overlap || currTop > gameSizeY || currRight > gameSizeX) {
 
                         projectileObject.destroyInstance()
                         clearInterval(travelTime)
