@@ -406,7 +406,7 @@ export class enemy extends collider {
                     );
 
 
-                    if (overlap) {
+                    if (overlap || currTop > window.innerHeight || currRight > window.innerWidth) {
 
                         projectileObject.destroyInstance()
                         clearInterval(travelTime)
