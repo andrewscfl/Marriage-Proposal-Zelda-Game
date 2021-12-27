@@ -289,7 +289,7 @@ export class hero extends collider {
         if (this.collision) {
 
             collider.colliderList.forEach(i => {
-                if (i.instance.collision && i.instance.type === 'enemy') {
+                if (i.instance.collision && (i.instance.type === 'enemy' || i.instance.type === 'boss')) {
                     i.instance.lives -= 1
                     if (i.instance.lives < 1) {
                         i.instance.destroyInstance()
@@ -344,7 +344,8 @@ export class enemy extends collider {
 
     attack = () => {
         if (!this.destroyed) {
-            this.enemy.classList.add('enemycharge')
+            if (this.type == 'enemy')
+                this.enemy.classList.add('enemycharge');
 
             const attackInterval = setInterval(() => {
                 if (this.movingUp) {
@@ -441,6 +442,7 @@ export class enemy extends collider {
 export class boss extends enemy {
     constructor(DOMELEMENT) {
         super(DOMELEMENT)
+        this.type = 'boss'
         this.lives = 10
     }
 }

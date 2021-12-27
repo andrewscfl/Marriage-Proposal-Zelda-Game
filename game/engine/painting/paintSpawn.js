@@ -1,5 +1,5 @@
 //spawns hero
-import { barrier, collider, hero, enemy, teleporter } from '../engine'
+import { boss ,barrier, collider, hero, enemy, teleporter } from '../engine'
 import BindHeroMovement from '../../input/eventlisteners/hero'
 
 let screenToPaint = 1
@@ -258,6 +258,11 @@ const paintScreen3 = () => {
     heroElement.classList.add('front1')
     document.querySelector('.objects').appendChild(heroElement)
 
+
+    const enemyElement = document.createElement('div')
+    enemyElement.classList.add('levi')
+    document.querySelector('.objects').appendChild(enemyElement)
+
     const teleporterBackElem = document.createElement('div')
     teleporterBackElem.classList.add('teleporter')
     teleporterBackElem.setAttribute('style', `
@@ -357,6 +362,7 @@ const paintScreen3 = () => {
     spriteList.forEach(item => document.querySelector('.objects').appendChild(item))
 
     const heroObject = new hero(heroElement)
+    const enemyObject = new boss(enemyElement)
     new teleporter(teleporterBackElem, 2)
     new collider(wallElementTwo)
     new collider(wallElementThree)
@@ -368,6 +374,7 @@ const paintScreen3 = () => {
     new teleporter(teleporterElem, 3)
  
     heroObject.setPositionPX(window.innerWidth / 4 - (heroElement.getBoundingClientRect().width / 2), window.innerHeight / 2 - (heroElement.getBoundingClientRect().height))
+    enemyObject.setPositionPX(window.innerWidth / 2 - (heroElement.getBoundingClientRect().width / 2), window.innerHeight / 2 - (heroElement.getBoundingClientRect().height))
 
     new BindHeroMovement(heroObject)
 }

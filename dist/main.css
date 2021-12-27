@@ -136,6 +136,16 @@ body{
     background-position: center center;
 }
 
+.levi { 
+    height: 200px;
+    width: 400px;
+    background-image: url(./assets/leviright.png) !important;
+    background-repeat: no-repeat;
+    background-size:contain;
+    position: absolute;
+    background-position: center center;
+}
+
 .enemycharge {
     background-image: url(./assets/octorok2.png) !important;
 }
