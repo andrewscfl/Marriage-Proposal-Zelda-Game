@@ -379,8 +379,8 @@ export default function () {
 
     document.addEventListener('change-screen', (event) => {
         collider.intervalList.forEach(item => clearInterval(item))
-        collider.colliderList = []
         const colliderList = event.detail.cl
+        
         const screenToPaint = event.detail.screen
         console.log('running change screen')
 
@@ -389,6 +389,7 @@ export default function () {
                 colliderList.forEach(item => {
                     item.element.remove()
                 })
+                collider.colliderList = []
                 paintScreen1()
                 break
             case 2:
@@ -396,6 +397,7 @@ export default function () {
                 colliderList.forEach(item => {
                     item.element.remove()
                 })
+                collider.colliderList = []
                 paintScreen2()
                 break
             case 3:
@@ -403,6 +405,7 @@ export default function () {
                 colliderList.forEach(item => {
                     item.element.remove()
                 })
+                collider.colliderList = []
                 paintScreen3()
 
         }
