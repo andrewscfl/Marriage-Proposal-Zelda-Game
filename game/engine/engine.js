@@ -31,7 +31,7 @@ export class collider {
 
     clearStage = () => {
         collider.intervalList.forEach(inter => clearInterval(inter))
-        collider.colliderList.forEach((item,index) => {
+        collider.colliderList.forEach((item, index) => {
             collider.colliderList.splice(index, 1)
         })
     }
@@ -47,21 +47,21 @@ export class collider {
         for (let i = 0; i < collider.colliderList.length; i++) {
             for (let x = (i + 1); x < collider.colliderList.length; x++) {
                 if (collider.colliderList[i].element !== undefined && collider.colliderList[x].element !== undefined) {
-                // compare if collision here
-                let rect1 = collider.colliderList[i].element.getBoundingClientRect()
-                let rect2 = collider.colliderList[x].element.getBoundingClientRect()
+                    // compare if collision here
+                    let rect1 = collider.colliderList[i].element.getBoundingClientRect()
+                    let rect2 = collider.colliderList[x].element.getBoundingClientRect()
 
-                let overlap = !(
-                    rect1.top > rect2.bottom ||
-                    rect1.right < rect2.left ||
-                    rect1.bottom < rect2.top ||
-                    rect1.left > rect2.right
-                );
+                    let overlap = !(
+                        rect1.top > rect2.bottom ||
+                        rect1.right < rect2.left ||
+                        rect1.bottom < rect2.top ||
+                        rect1.left > rect2.right
+                    );
 
 
-                //end collision compare
-                collider.colliderList[i].instance.collision = overlap
-                collider.colliderList[x].instance.collision = overlap
+                    //end collision compare
+                    collider.colliderList[i].instance.collision = overlap
+                    collider.colliderList[x].instance.collision = overlap
 
                 }
 
@@ -93,14 +93,14 @@ export class collider {
                     collider.colliderList[i].instance.collision = overlap
                     collider.colliderList[x].instance.collision = overlap
 
-                   
-                    
+
+
 
                     const inst1 = collider.colliderList[i].instance
                     const inst2 = collider.colliderList[x].instance
                     if ((inst1.collision && inst2.collision) && (inst1.type === 'hero' && inst2.type === 'teleport') || (inst1.type === 'teleport' && inst2.type === 'hero')) {
                         const teleporterScreenTarget = inst1.type === 'teleport' ? inst1.screen : inst2.screen
-                        const event = new CustomEvent('change-screen', { "detail": { "cl": collider.colliderList, "screen" : teleporterScreenTarget } })
+                        const event = new CustomEvent('change-screen', { "detail": { "cl": collider.colliderList, "screen": teleporterScreenTarget } })
                         document.dispatchEvent(event)
                     }
 
@@ -142,9 +142,9 @@ export class collider {
         let newValPx = newVal + 'px'
         this.element.style[direction] = newValPx
         collider.checkCollisions()
-        
+
         if (this.collision) {
-            
+
             let current = parseInt(this.element.style[direction].replace('px', ''))
             let newVal = isPositive ? current -= 8 : current += 8
             let newValPx = newVal + 'px'
@@ -337,9 +337,10 @@ export class enemy extends collider {
         this.type = 'enemy'
         this.movingUp = true
 
+        const intervalAttack = this.type === 'enemy' ? 2000 : 200
         const enemyInterval = setInterval(() => {
             this.attack()
-        }, 4500)
+        }, intervalAttack)
 
         collider.intervalList.push(enemyInterval)
 
@@ -347,31 +348,45 @@ export class enemy extends collider {
     }
 
     attack = () => {
+
         if (!this.destroyed) {
+            const heroElement = collider.colliderList.filter(item => item.instance.getHeroStatus())
+            const hero = heroElement.length > 0 ? heroElement[0] : null
+            const x1 = hero.element.getBoundingClientRect().x
+            const y1 = hero.element.getBoundingClientRect().y
+            const x2 = this.element.getBoundingClientRect().x
+            const y2 = this.element.getBoundingClientRect().y
+
+
             if (this.type == 'enemy')
                 this.enemy.classList.add('enemycharge');
 
-            const attackInterval = setInterval(() => {
-                if (this.movingUp) {
-                    this.moveUp()
-                    this.movingUp = false
-                }
-                else {
-                    this.moveDown()
-                    this.movingUp = true
-                }
-            }, 3000)
+           
+                const currTop = parseInt(this.enemy.style.top.split('px')[0])
+                const currRight = parseInt(this.enemy.style.right.split('px')[0])
 
-            collider.intervalList.push(attackInterval)
+                const rise = y2 - y1
+                const run = x2 - x1
 
-            const heroElement = collider.colliderList.filter(item => item.instance.getHeroStatus())
-            const hero = heroElement.length > 0 ? heroElement[0] : null
+                const Y = - rise / 60
+                const X = run / 60
+
+                const newTop = currTop + Y * 3 + 'px'
+                const newRight = currRight + X * 3 + 'px'
+
+                this.enemy.style.top = newTop
+                this.enemy.style.right = newRight
+
+
+
+        
+
+            
+
+
             if (hero !== null) {
                 // find slope and fire projectile in direction here
-                const x1 = hero.element.getBoundingClientRect().x
-                const y1 = hero.element.getBoundingClientRect().y
-                const x2 = this.element.getBoundingClientRect().x
-                const y2 = this.element.getBoundingClientRect().y
+
 
                 const projElem = document.createElement('div')
                 projElem.classList.add('projectile')
