@@ -103,6 +103,7 @@ export class collider {
                     if ((inst1.collision && inst2.collision) && (inst1.type === 'hero' && inst2.type === 'teleport') || (inst1.type === 'teleport' && inst2.type === 'hero')) {
                         const teleporterScreenTarget = inst1.type === 'teleport' ? inst1.screen : inst2.screen
                         const event = new CustomEvent('change-screen', { "detail": { "cl": collider.colliderList, "screen": teleporterScreenTarget } })
+                        console.log('changing screen to ' + teleporterScreenTarget)
                         document.dispatchEvent(event)
                     }
 

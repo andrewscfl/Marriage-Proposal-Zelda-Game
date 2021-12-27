@@ -126,8 +126,7 @@ const paintScreen1 = () => {
 }
 
 const paintScreen2 = () => {
-    document.querySelector('.audio').setAttribute('src','./assets/main.mp3')
-    document.querySelector('.audio').play()    
+    
 
     const heroElement = document.createElement('div')
     heroElement.classList.add('hero')
@@ -257,8 +256,7 @@ const paintScreen2 = () => {
 }
 
 const paintScreen3 = () => {
-    document.querySelector('.audio').setAttribute('src', './assets/megalavania.mp3')
-    document.querySelector('.audio').play()
+ 
 
 
     const heroElement = document.createElement('div')
@@ -269,6 +267,10 @@ const paintScreen3 = () => {
 
     const enemyElement = document.createElement('div')
     enemyElement.classList.add('levi')
+    enemyElement.setAttribute('style', `
+    top: ${gameSizeY / 2 - (heroElement.getBoundingClientRect().height)}px;
+    right: ${gameSizeX / 2 - (heroElement.getBoundingClientRect().width / 2)}px;
+    `)
     document.querySelector('.objects').appendChild(enemyElement)
 
     const teleporterBackElem = document.createElement('div')
@@ -382,7 +384,7 @@ const paintScreen3 = () => {
     new teleporter(teleporterElem, 4)
  
     heroObject.setPositionPX(gameSizeX / 4 - (heroElement.getBoundingClientRect().width / 2), gameSizeY / 2 - (heroElement.getBoundingClientRect().height))
-    enemyObject.setPositionPX(gameSizeX / 2 - (heroElement.getBoundingClientRect().width / 2), gameSizeY / 2 - (heroElement.getBoundingClientRect().height))
+    enemyObject.setPositionPX(gameSizeX / 2 - (heroElement.getBoundingClientRect().width / 2),gameSizeY / 2 - (heroElement.getBoundingClientRect().height))
 
     new BindHeroMovement(heroObject)
 
@@ -394,21 +396,12 @@ const paintScreen3 = () => {
     },1000)
 }
 
-
 const paintScreen4 = () => {
-
-    document.querySelector('.audio').setAttribute('src','./assets/main.mp3')
-    document.querySelector('.audio').play()
-
+    
     const heroElement = document.createElement('div')
     heroElement.classList.add('hero')
     heroElement.classList.add('front1')
     document.querySelector('.objects').appendChild(heroElement)
-
-
-    const enemyElement = document.createElement('div')
-    enemyElement.classList.add('levi')
-    document.querySelector('.objects').appendChild(enemyElement)
 
     const teleporterBackElem = document.createElement('div')
     teleporterBackElem.classList.add('teleporter')
@@ -509,7 +502,7 @@ const paintScreen4 = () => {
     spriteList.forEach(item => document.querySelector('.objects').appendChild(item))
 
     const heroObject = new hero(heroElement)
-   
+    
     new teleporter(teleporterBackElem, 3)
     new collider(wallElementTwo)
     new collider(wallElementThree)
@@ -523,21 +516,23 @@ const paintScreen4 = () => {
     heroObject.setPositionPX(gameSizeX / 4 - (heroElement.getBoundingClientRect().width / 2), gameSizeY / 2 - (heroElement.getBoundingClientRect().height))
 
     new BindHeroMovement(heroObject)
-
+    
 }
+
+
 
 
 
 export default function () {
 
-    paintScreen3()
+    paintScreen1()
 
     document.addEventListener('change-screen', (event) => {
         collider.intervalList.forEach(item => clearInterval(item))
         const colliderList = event.detail.cl
         
         const screenToPaint = event.detail.screen
-        console.log('running change screen')
+        console.log('running change screen' + screenToPaint)
 
         switch (screenToPaint) {
             case 1:
@@ -566,8 +561,8 @@ export default function () {
                 collider.colliderList = []
                 document.querySelector('.objects').innerHTML = ''
                 paintScreen3()
+                break
             case 4:
-               
                 console.log('teleport to screen 4')
                 colliderList.forEach(item => {
                     item.element.remove()
@@ -575,6 +570,9 @@ export default function () {
                 collider.colliderList = []
                 document.querySelector('.objects').innerHTML = ''
                 paintScreen4()
+                break
+            
+                
 
         }
     })
