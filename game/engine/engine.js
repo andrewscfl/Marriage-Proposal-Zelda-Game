@@ -1,3 +1,5 @@
+import heroMovement from '../input/eventlisteners/hero'
+
 const gameSizeX = document.querySelector('.game').clientWidth
 const gameSizeY = 991
 
@@ -5,6 +7,7 @@ const gameSizeY = 991
 export class collider {
     static colliderList = []
     static intervalList = []
+    static pauseGame = false
     constructor(DOMELEMENT) {
 
         this.element = DOMELEMENT
@@ -22,6 +25,7 @@ export class collider {
             instance: this,
         })
     }
+
 
     destroyInstance = () => {
         this.element.remove()
@@ -92,8 +96,6 @@ export class collider {
                     //end collision compare
                     collider.colliderList[i].instance.collision = overlap
                     collider.colliderList[x].instance.collision = overlap
-
-
 
 
                     const inst1 = collider.colliderList[i].instance
@@ -337,9 +339,13 @@ export class enemy extends collider {
         this.type = 'enemy'
         this.movingUp = true
 
-        const intervalAttack = this.type === 'enemy' ? 2000 : 200
+        const intervalAttack = this.type === 'enemy' ? 1000 : 100
         const enemyInterval = setInterval(() => {
-            this.attack()
+            if (!collider.pauseGame) {
+                console.log('fired off attack')
+                this.attack()
+            }
+
         }, intervalAttack)
 
         collider.intervalList.push(enemyInterval)
@@ -358,30 +364,37 @@ export class enemy extends collider {
             const y2 = this.element.getBoundingClientRect().y
 
 
+            //logic to flip enemy on player movment
+
+            if (x1 < (gameSizeX/ 2)){
+                this.enemy.classList.add('flipX')
+            }
+            else {
+                this.enemy.classList.remove('flipX')
+            }
+
+            //end flip logic
+
+
             if (this.type == 'enemy')
                 this.enemy.classList.add('enemycharge');
 
-           
-                const currTop = parseInt(this.enemy.style.top.split('px')[0])
-                const currRight = parseInt(this.enemy.style.right.split('px')[0])
 
-                const rise = y2 - y1
-                const run = x2 - x1
+            const currTop = parseInt(this.enemy.style.top.split('px')[0])
+            const currRight = parseInt(this.enemy.style.right.split('px')[0])
 
-                const Y = - rise / 60
-                const X = run / 60
+            const rise = y2 - y1
+            const run = x2 - x1
 
-                const newTop = currTop + Y * 3 + 'px'
-                const newRight = currRight + X * 3 + 'px'
+            const Y = - rise / 60
+            const X = run / 60
 
-                this.enemy.style.top = newTop
-                this.enemy.style.right = newRight
+            const newTop = currTop + Y * 3 + 'px'
+            const newRight = currRight + X * 3 + 'px'
 
+            this.enemy.style.top = newTop
+            this.enemy.style.right = newRight
 
-
-        
-
-            
 
 
             if (hero !== null) {
@@ -400,39 +413,40 @@ export class enemy extends collider {
                 const projectileObject = new projectile(projElem)
 
                 const travelTime = setInterval(() => {
-                    const currTop = parseInt(projectileObject.element.style.top.split('px')[0])
-                    const currRight = parseInt(projectileObject.element.style.right.split('px')[0])
+                    if (!collider.pauseGame) {
+                        const currTop = parseInt(projectileObject.element.style.top.split('px')[0])
+                        const currRight = parseInt(projectileObject.element.style.right.split('px')[0])
 
-                    const rise = y2 - y1
-                    const run = x2 - x1
+                        const rise = y2 - y1
+                        const run = x2 - x1
 
-                    const Y = - rise / 60
-                    const X = run / 60
+                        const Y = - rise / 60
+                        const X = run / 60
 
-                    const newTop = currTop + Y * 3 + 'px'
-                    const newRight = currRight + X * 3 + 'px'
+                        const newTop = currTop + Y * 3 + 'px'
+                        const newRight = currRight + X * 3 + 'px'
 
-                    projElem.style.top = newTop
-                    projElem.style.right = newRight
+                        projElem.style.top = newTop
+                        projElem.style.right = newRight
 
-                    let rect1 = hero.element.getBoundingClientRect()
-                    let rect2 = projElem.getBoundingClientRect()
+                        let rect1 = hero.element.getBoundingClientRect()
+                        let rect2 = projElem.getBoundingClientRect()
 
-                    let overlap = !(
-                        rect1.top > rect2.bottom ||
-                        rect1.right < rect2.left ||
-                        rect1.bottom < rect2.top ||
-                        rect1.left > rect2.right
-                    );
+                        let overlap = !(
+                            rect1.top > rect2.bottom ||
+                            rect1.right < rect2.left ||
+                            rect1.bottom < rect2.top ||
+                            rect1.left > rect2.right
+                        );
 
 
-                    if (overlap || currTop > gameSizeY || currRight > gameSizeX) {
+                        if (overlap || currTop > gameSizeY || currRight > gameSizeX) {
 
-                        projectileObject.destroyInstance()
-                        clearInterval(travelTime)
+                            projectileObject.destroyInstance()
+                            clearInterval(travelTime)
+                        }
+
                     }
-
-
                 }, 200)
 
                 collider.intervalList.push(travelTime)
@@ -467,6 +481,48 @@ export class boss extends enemy {
 }
 
 
-// export class dialog {
-//     constructor()
-// }
+export class dialog {
+    constructor(dialogText, sender) {
+        this.dialogText = dialogText
+        this.sender = sender
+        const dialogElement = document.createElement('div')
+        this.element = dialogElement
+
+        dialogElement.setAttribute('style', `
+        position: absolute;
+        width: 100%;
+        color: white;
+        z-index: 9999999999;
+        bottom: 0;
+        `)
+        dialogElement.innerHTML = `
+        <div class="nes-container is-dark with-title">
+            <p class="title">${sender}</p>
+            <p class="type-message"></p>
+        </div>`
+
+        document.querySelector('.objects').appendChild(dialogElement)
+        this.queueMessage()
+
+    }
+
+    queueMessage = () => {
+        let i = 0
+        const printInterval = setInterval(() => {
+            document.querySelector('.type-message').innerHTML = this.dialogText.substring(0, i)
+            i++
+            if (i > this.dialogText.length) {
+                clearInterval(printInterval)
+                setTimeout(() => {
+                    this.element.remove()
+                    collider.pauseGame = false
+                }, 4000)
+            }
+        }, 50)
+
+    }
+
+
+
+
+}

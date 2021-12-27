@@ -7,6 +7,13 @@ body{
     margin: 0;
 }
 
+.flipX {
+    transform: scaleX(-1);
+}
+.flipY {
+    transform: scaleY(-1);
+}
+
 .rock {
     position: absolute;
     width: 90px;
