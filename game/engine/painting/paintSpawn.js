@@ -5,6 +5,11 @@ import BindHeroMovement from '../../input/eventlisteners/hero'
 let screenToPaint = 1
 
 const paintScreen1 = () => {
+
+    document.querySelector('.audio').setAttribute('src', './assets/main.mp3')
+    document.querySelector('.audio').play()
+
+
     const heroElement = document.createElement('div')
     heroElement.classList.add('hero')
     heroElement.classList.add('front1')
@@ -251,6 +256,8 @@ const paintScreen2 = () => {
 }
 
 const paintScreen3 = () => {
+    document.querySelector('.audio').setAttribute('src', './assets/megalavania.mp3')
+    document.querySelector('.audio').play()
 
 
     const heroElement = document.createElement('div')
