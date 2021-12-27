@@ -413,7 +413,7 @@ export class enemy extends collider {
                     }
 
 
-                }, 50)
+                }, 200)
 
                 collider.intervalList.push(travelTime)
 
@@ -435,4 +435,17 @@ export class enemy extends collider {
 
 
 
+}
+
+
+export class boss extends enemy {
+    constructor(DOMELEMENT) {
+        super(DOMELEMENT)
+        this.lives = 10
+    }
+}
+
+
+export class dialog {
+    constructor()
 }
