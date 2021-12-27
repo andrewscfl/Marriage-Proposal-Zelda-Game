@@ -446,6 +446,6 @@ export class boss extends enemy {
 }
 
 
-export class dialog {
-    constructor()
-}
+// export class dialog {
+//     constructor()
+// }
