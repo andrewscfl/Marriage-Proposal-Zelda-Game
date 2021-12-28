@@ -48,6 +48,10 @@ body{
     padding: 30px;
 }
 
+.final {
+    background-color: #181414 !important;
+}
+
 .spawn-screen, .screen1 {
     background-color: #fcd8a8;
 }

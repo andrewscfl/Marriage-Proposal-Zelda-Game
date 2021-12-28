@@ -391,7 +391,8 @@ const paintScreen3 = () => {
 
     setTimeout(() => {
         collider.pauseGame = true
-        new dialog("MOM YOU DIDN'T TAKE ME OUT WHEN I RANG THE BELLS, I WILL SHIT NOW",'LEVI')
+        const dogDialog = new dialog("MOM YOU DIDN'T TAKE ME OUT WHEN I RANG THE BELLS, I WILL SHIT NOW",'LEVI')
+        dogDialog.queueMessage()
         
     },1000)
 }
@@ -405,6 +406,7 @@ const paintScreen4 = () => {
 
     const teleporterBackElem = document.createElement('div')
     teleporterBackElem.classList.add('teleporter')
+    teleporterBackElem.classList.add('teleporter1')
     teleporterBackElem.setAttribute('style', `
     height: ${gameSizeY / 3 + 20}px;
     top: ${gameSizeY / 3}px;
@@ -415,6 +417,7 @@ const paintScreen4 = () => {
 
     const wallElementPartial1 = document.createElement('div')
     wallElementPartial1.classList.add('grasswall')
+    wallElementPartial1.classList.add('grasswall1')
     wallElementPartial1.setAttribute('style', `
     height: ${gameSizeY / 3}px;
     top: 0;
@@ -426,6 +429,7 @@ const paintScreen4 = () => {
 
     const wallElementPartial2 = document.createElement('div')
     wallElementPartial2.classList.add('grasswall')
+    wallElementPartial2.classList.add('grasswall2')
     wallElementPartial2.setAttribute('style', `
     height: ${gameSizeY / 3}px;
     bottom: 0;
@@ -437,11 +441,12 @@ const paintScreen4 = () => {
 
     const wallElementPartial3 = document.createElement('div')
     wallElementPartial3.classList.add('grasswall')
+    wallElementPartial3.classList.add('grasswall3')
     wallElementPartial3.setAttribute('style', `
-    height: ${gameSizeY / 3}px;
+    height: 30px;
     top: 0;
-    left: 0;
-    width: 30px;
+    right: 0;
+    width: ${gameSizeX / 3}px;
     bottom: 0;
     position: absolute;
     background-image: url(./assets/grass.png);
@@ -449,29 +454,32 @@ const paintScreen4 = () => {
 
     const wallElementPartial4 = document.createElement('div')
     wallElementPartial4.classList.add('grasswall')
+    wallElementPartial4.classList.add('grasswall4')
     wallElementPartial4.setAttribute('style', `
-    height: ${gameSizeY / 3}px;
+    top: 0;
+    width: ${gameSizeX / 3 + 20}px;
     left: 0;
-    width: 30px;
-    bottom: 0;
+    height: 30px;
     position: absolute;
-    background-image: url(./assets/grass.png);
     `)
 
     const teleporterElem = document.createElement('div')
     teleporterElem.classList.add('teleporter')
+    teleporterElem.classList.add('teleporter2')
     teleporterElem.setAttribute('style', `
-    height: ${gameSizeY / 3 + 20}px;
-    top: ${gameSizeY / 3}px;
-    width: 30px;
+    top: 0;
+    width: ${gameSizeX / 3 + 20}px;
+    right: ${gameSizeX / 3}px;
+    height: 30px;
     position: absolute;
     `)
 
     const wallElementTwo = document.createElement('div')
     wallElementTwo.classList.add('grasswall')
+    wallElementTwo.classList.add('grasswall5')
     wallElementTwo.setAttribute('style', `
-    width: 30px;
-    height: ${gameSizeY / 3}px;
+    width: ${gameSizeX / 3}px;
+    height: 30px;
     left: 0;
     top: 0;
     position: absolute;
@@ -480,9 +488,10 @@ const paintScreen4 = () => {
 
     const wallElementThree = document.createElement('div')
     wallElementThree.classList.add('grasswall')
+    wallElementThree.classList.add('grasswall6')
     wallElementThree.setAttribute('style', `
-    width: ${gameSizeX}px;
-    height: 30px;
+    width: 30px;
+    height: ${gameSizeY}px;
     top: 0;
     position: absolute;
     background-image: url(./assets/grass.png);
@@ -490,6 +499,7 @@ const paintScreen4 = () => {
 
     const wallElementFour = document.createElement('div')
     wallElementFour.classList.add('grasswall')
+    wallElementFour.classList.add('grasswall7')
     wallElementFour.setAttribute('style', `
     width: ${gameSizeX}px;
     height: 30px;
@@ -519,6 +529,204 @@ const paintScreen4 = () => {
     
 }
 
+const paintScreen5 = () => {
+    
+    document.querySelector('.spawn-screen').classList.add('final')
+
+
+    const heroElement = document.createElement('div')
+    heroElement.classList.add('hero')
+    heroElement.classList.add('back1')
+    document.querySelector('.objects').appendChild(heroElement)
+
+    const wallElementOne = document.createElement('div')
+    wallElementOne.classList.add('wall')
+    wallElementOne.classList.add('grasswall5')
+    wallElementOne.setAttribute('style', `
+    height: ${gameSizeY}px;
+    width: 30px;
+    right: 0;
+    top: 0;
+    position: absolute;
+    `)
+
+    const wallElementTwo = document.createElement('div')
+    wallElementTwo.classList.add('wall')
+    wallElementTwo.classList.add('grasswall5')
+    wallElementTwo.setAttribute('style', `
+    width: ${gameSizeX}px;
+    height: 30px;
+    left: 0;
+    top: 0;
+    position: absolute;
+    `)
+
+    const wallElementThree = document.createElement('div')
+    wallElementThree.classList.add('wall')
+    wallElementThree.classList.add('grasswall6')
+    wallElementThree.setAttribute('style', `
+    width: 30px;
+    height: ${gameSizeY}px;
+    top: 0;
+    position: absolute;
+    `)
+
+    const wallElementFour = document.createElement('div')
+    wallElementFour.classList.add('wall')
+    wallElementFour.classList.add('grasswall7')
+    wallElementFour.setAttribute('style', `
+    width: ${gameSizeX}px;
+    height: 30px;
+    bottom: 0;
+    position: absolute;
+    `)
+
+    const natasha = document.createElement('div')
+    natasha.classList.add('natasha')
+    natasha.setAttribute('style', `
+    position: absolute;
+    top: ${gameSizeY / 2.7   - (heroElement.getBoundingClientRect().height)}px;
+    right: ${gameSizeX / 2 - (heroElement.getBoundingClientRect().width / 2)}px;
+    height: 100px;
+    width: 80px;
+    background-image: url(./assets/natasha.png);
+    background-size: cover;
+    `)
+    const alejandro = document.createElement('div')
+    alejandro.setAttribute('style', `
+    position: absolute;
+    top: ${gameSizeY / 2.7   - (heroElement.getBoundingClientRect().height)}px;
+    right: ${gameSizeX / 2 + 100 - (heroElement.getBoundingClientRect().width / 2)}px;
+    height: 100px;
+    width: 80px;
+    background-image: url(./assets/alejandro.png);
+    background-size: cover;
+    `)
+
+    const kristina = document.createElement('div')
+    kristina.setAttribute('style', `
+    position: absolute;
+    top: ${gameSizeY / 2.7   - (heroElement.getBoundingClientRect().height)}px;
+    right: ${gameSizeX / 2 - 100 - (heroElement.getBoundingClientRect().width / 2)}px;
+    height: 100px;
+    width: 80px;
+    background-image: url(./assets/kristina.png);
+    background-size: cover;
+    `)
+
+    const lena = document.createElement('div')
+    lena.setAttribute('style', `
+    position: absolute;
+    top: ${gameSizeY / 2.7   - (heroElement.getBoundingClientRect().height)}px;
+    right: ${gameSizeX / 2 + 200 - (heroElement.getBoundingClientRect().width / 2)}px;
+    height: 100px;
+    width: 80px;
+    background-image: url(./assets/lena.png);
+    background-size: cover;
+    `)
+
+    const andrew = document.createElement('div')
+    andrew.classList.add('andrew')
+    andrew.setAttribute('style', `
+    position: absolute;
+    top: ${gameSizeY / 1.7   - (heroElement.getBoundingClientRect().height)}px;
+    right: ${gameSizeX / 2 - (heroElement.getBoundingClientRect().width / 2)}px;
+    height: 100px;
+    width: 80px;
+    background-image: url(./assets/andrew.png);
+    background-size: cover;
+    `)
+
+    const spriteList = [andrew, lena, kristina, alejandro, natasha, heroElement, wallElementTwo, wallElementThree, wallElementFour, wallElementOne]
+    spriteList.forEach(item => document.querySelector('.objects').appendChild(item))
+
+    const heroObject = new hero(heroElement)
+    new collider(wallElementOne)
+    new collider(wallElementTwo)
+    new collider(wallElementThree)
+    new collider(wallElementFour)
+ 
+    heroObject.setPositionPX(gameSizeX / 2 - (heroElement.getBoundingClientRect().width / 2), gameSizeY / 1.2   - (heroElement.getBoundingClientRect().height))
+
+    const quotes = [
+        {
+            name: 'KRISTINA',
+            quote: "You've grown so much individually and as a couple, and I can't wait to see where this next stage leads you. I hope happiness always follows you two."
+        },
+        {
+            name: 'LENA',
+            quote: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+        },
+        {
+            name: 'NATASHA',
+            quote: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+        },
+        {
+            name: 'ALEJANDRO',
+            quote: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+        },
+        {
+            name: 'TREVOR',
+            quote: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+        },
+        {
+            name: 'ANDREW',
+            quote: 'YOU HAVE BEEN MY BEST FRIEND FOR AS LONG AS I CAN REMEMBER. WE HAVE GONE ON SO MANY ADVENTURES'
+        },
+        {
+            name: 'ANDREW',
+            quote: 'FROM HIGHSCHOOL, THROUGH ALL OF COLLEGE, AND INTO OUR CAREERS YOU HAVE BEEN BY MY SIDE'
+        },
+        {
+            name: 'ANDREW',
+            quote: 'IM INCREDIBLY LUCKY THAT I GET TO HAVE SOMEONE LIKE YOU IN LIFE, AND I WOULD LOVE NOTHING MORE THAN TO SPEND THE REST OF IT WITH YOU'
+        },
+    ]
+
+    function callQuotes(quoteNumber) {
+        const myDialog =  new dialog(quotes[quoteNumber].quote, quotes[quoteNumber].name)
+        myDialog.queueMessage().then(() => {
+            if (quoteNumber + 1 === quotes.length) {
+                document.querySelector('.andrew').setAttribute('style', `
+                position: absolute;
+                top: ${gameSizeY / 1.7   - (heroElement.getBoundingClientRect().height)}px;
+                right: ${gameSizeX / 2 - (heroElement.getBoundingClientRect().width / 2)}px;
+                height: 100px;
+                width: 80px;
+                background-image: url(./assets/andrewkneel1.png);
+                background-size: cover;
+                `)
+                setTimeout(() => {
+                    document.querySelector('.andrew').setAttribute('style', `
+                    position: absolute;
+                    top: ${gameSizeY / 1.7   - (heroElement.getBoundingClientRect().height)}px;
+                    right: ${gameSizeX / 2 - (heroElement.getBoundingClientRect().width / 2)}px;
+                    height: 100px;
+                    width: 80px;
+                    background-image: url(./assets/andrewkneel2.png);
+                    background-size: cover;
+                `)
+                const finalDialog = new dialog('TAKE A LOOK TO YOUR LEFT BABE','ANDREW')
+                finalDialog.queueMessage()
+                }, 1000)
+
+                return 
+            }
+            return callQuotes(quoteNumber + 1)
+        })
+    }
+
+    callQuotes(0)
+       
+    
+
+
+
+
+
+
+    
+}
 
 
 
@@ -570,6 +778,15 @@ export default function () {
                 collider.colliderList = []
                 document.querySelector('.objects').innerHTML = ''
                 paintScreen4()
+                break
+            case 5:
+                console.log('teleporting to screen 5')
+                colliderList.forEach(item => {
+                    item.element.remove()
+                })
+                collider.colliderList = []
+                document.querySelector('.objects').innerHTML = ''
+                paintScreen5()
                 break
             
                 

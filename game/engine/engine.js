@@ -340,7 +340,7 @@ export class enemy extends collider {
         this.type = 'enemy'
         this.movingUp = true
 
-        const intervalAttack = this.type === 'enemy' ? 1000 : 100
+        const intervalAttack = this.type === 'enemy' ? 3000 : 100
         const enemyInterval = setInterval(() => {
             if (!collider.pauseGame) {
                 console.log('fired off attack')
@@ -367,7 +367,7 @@ export class enemy extends collider {
 
             //logic to flip enemy on player movment
 
-            if (x1 < (gameSizeX/ 2)){
+            if (x1 < (gameSizeX / 2)) {
                 this.enemy.classList.add('flipX')
             }
             else {
@@ -503,23 +503,27 @@ export class dialog {
         </div>`
 
         document.querySelector('.objects').appendChild(dialogElement)
-        this.queueMessage()
+
 
     }
 
-    queueMessage = () => {
-        let i = 0
-        const printInterval = setInterval(() => {
-            document.querySelector('.type-message').innerHTML = this.dialogText.substring(0, i)
-            i++
-            if (i > this.dialogText.length) {
-                clearInterval(printInterval)
-                setTimeout(() => {
-                    this.element.remove()
-                    collider.pauseGame = false
-                }, 4000)
-            }
-        }, 50)
+    queueMessage = (callback) => {
+        return new Promise((res, rej) => {
+            let i = 0
+            const printInterval = setInterval(() => {
+                document.querySelector('.type-message').innerHTML = this.dialogText.substring(0, i)
+                i++
+                if (i > this.dialogText.length) {
+                    clearInterval(printInterval)
+                    setTimeout(() => {
+                        this.element.remove()
+                        collider.pauseGame = false
+                        res()
+                    }, 4000)
+                }
+            }, 50)
+        })
+
 
     }
 
