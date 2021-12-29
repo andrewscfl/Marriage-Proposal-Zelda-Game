@@ -8,6 +8,8 @@ export class collider {
     static colliderList = []
     static intervalList = []
     static pauseGame = false
+    
+
     constructor(DOMELEMENT) {
 
         this.element = DOMELEMENT
@@ -100,14 +102,23 @@ export class collider {
 
                     const inst1 = collider.colliderList[i].instance
                     const inst2 = collider.colliderList[x].instance
+
+                   
+
                     if ((inst1.collision && inst2.collision) && (inst1.type === 'hero' && inst2.type === 'teleport') || (inst1.type === 'teleport' && inst2.type === 'hero')) {
+                        
                         const teleporterScreenTarget = inst1.type === 'teleport' ? inst1.screen : inst2.screen
+                        if (teleporterScreenTarget === 5 && document.querySelector('.inventory-container').classList.contains('empty')) {
+                            new dialog('DEFEAT THE BEAST BEFORE ENTERING!','NARATOR').queueMessage()
+                            return
+                        }
                         const event = new CustomEvent('change-screen', { "detail": { "cl": collider.colliderList, "screen": teleporterScreenTarget } })
                         console.log('changing screen to ' + teleporterScreenTarget)
                         document.dispatchEvent(event)
                     }
 
 
+    
 
                     if (overlap) {
                         return true
@@ -220,6 +231,7 @@ export class collider {
 
 }
 
+
 export class attackWeapon extends collider {
     constructor(DOMELEMENT) {
         super(DOMELEMENT)
@@ -243,6 +255,22 @@ export class hero extends collider {
         this.isHero = true
         this.type = 'hero'
         this.screen = 1
+        this.lives = 3
+        document.querySelector('.livesDOM').innerHTML = this.lives
+    }
+
+    takeDamage = () => {
+        this.lives -= 1
+        document.querySelector('.livesDOM').innerHTML = this.lives
+        if (this.lives === 0) {
+            this.dispatchGameOver()
+        }
+
+    }
+
+    dispatchGameOver = () => {
+        document.body.innerHTML = `<div style=" width: 100%; height: 100vh; position: absolute; background-color: black; display: flex; flex-direction: column; justify-content: center; align-items: center;"><h1 style="font-size: 90px;" class="white">GAME OVER</h1><h3 class="white">PRESS ANY BUTTON TO TRY AGAIN<h3/></div>`;
+        document.addEventListener('keydown', () => location.reload())
     }
 
 
@@ -299,6 +327,11 @@ export class hero extends collider {
                 if (i.instance.collision && (i.instance.type === 'enemy' || i.instance.type === 'boss')) {
                     i.instance.lives -= 1
                     if (i.instance.lives < 1) {
+                        if (i.instance.type === 'boss') {
+                            new dialog('ELENI RECIEVED THE SKELETON KEY, AND LEVI WENT BACK TO HIS HOUSE', 'NARATOR').queueMessage()
+                            document.querySelector('.inventory-container').classList.remove('empty')
+                            document.querySelector('.inventory-container').innerHTML = `<img src="./assets/key.png" width="80" >`
+                        }
                         i.instance.destroyInstance()
 
                     }
@@ -340,7 +373,7 @@ export class enemy extends collider {
         this.type = 'enemy'
         this.movingUp = true
 
-        const intervalAttack = this.type === 'enemy' ? 3000 : 100
+        const intervalAttack = this.type === 'enemy' ? 2000 : 50
         const enemyInterval = setInterval(() => {
             if (!collider.pauseGame) {
                 console.log('fired off attack')
@@ -440,8 +473,11 @@ export class enemy extends collider {
                             rect1.left > rect2.right
                         );
 
+                        if (overlap) hero.instance.takeDamage()
 
                         if (overlap || currTop > gameSizeY || currRight > gameSizeX) {
+                            console.log('collision with hero element')
+                            
 
                             projectileObject.destroyInstance()
                             clearInterval(travelTime)

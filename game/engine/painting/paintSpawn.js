@@ -391,7 +391,7 @@ const paintScreen3 = () => {
 
     setTimeout(() => {
         collider.pauseGame = true
-        const dogDialog = new dialog("MOM YOU DIDN'T TAKE ME OUT WHEN I RANG THE BELLS, I WILL SHIT NOW",'LEVI')
+        const dogDialog = new dialog("YOULL NEVER GET THE SKELETON KEY OUT OF MY MOUTH. I WILL FLING MY POO AT YOU",'LEVI')
         dogDialog.queueMessage()
         
     },1000)
@@ -706,7 +706,7 @@ const paintScreen5 = () => {
                     background-image: url(./assets/andrewkneel2.png);
                     background-size: cover;
                 `)
-                const finalDialog = new dialog('TAKE A LOOK TO YOUR LEFT BABE','ANDREW')
+                const finalDialog = new dialog('ITS DANGEROUS TO GO ALONE TAKE THIS','ANDREW')
                 finalDialog.queueMessage()
                 }, 1000)
 
