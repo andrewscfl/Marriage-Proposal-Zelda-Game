@@ -8,7 +8,7 @@ export class collider {
     static colliderList = []
     static intervalList = []
     static pauseGame = false
-    
+
 
     constructor(DOMELEMENT) {
 
@@ -103,13 +103,13 @@ export class collider {
                     const inst1 = collider.colliderList[i].instance
                     const inst2 = collider.colliderList[x].instance
 
-                   
+
 
                     if ((inst1.collision && inst2.collision) && (inst1.type === 'hero' && inst2.type === 'teleport') || (inst1.type === 'teleport' && inst2.type === 'hero')) {
-                        
+
                         const teleporterScreenTarget = inst1.type === 'teleport' ? inst1.screen : inst2.screen
                         if (teleporterScreenTarget === 5 && document.querySelector('.inventory-container').classList.contains('empty')) {
-                            new dialog('DEFEAT THE BEAST BEFORE ENTERING!','NARATOR').queueMessage()
+                            new dialog('DEFEAT THE BEAST BEFORE ENTERING!', 'NARATOR').queueMessage()
                             return
                         }
                         const event = new CustomEvent('change-screen', { "detail": { "cl": collider.colliderList, "screen": teleporterScreenTarget } })
@@ -118,7 +118,7 @@ export class collider {
                     }
 
 
-    
+
 
                     if (overlap) {
                         return true
@@ -255,7 +255,7 @@ export class hero extends collider {
         this.isHero = true
         this.type = 'hero'
         this.screen = 1
-        this.lives = 3
+        this.lives = 4
         document.querySelector('.livesDOM').innerHTML = this.lives
     }
 
@@ -477,7 +477,7 @@ export class enemy extends collider {
 
                         if (overlap || currTop > gameSizeY || currRight > gameSizeX) {
                             console.log('collision with hero element')
-                            
+
 
                             projectileObject.destroyInstance()
                             clearInterval(travelTime)
@@ -547,16 +547,19 @@ export class dialog {
         return new Promise((res, rej) => {
             let i = 0
             const printInterval = setInterval(() => {
-                document.querySelector('.type-message').innerHTML = this.dialogText.substring(0, i)
-                i++
-                if (i > this.dialogText.length) {
-                    clearInterval(printInterval)
-                    setTimeout(() => {
-                        this.element.remove()
-                        collider.pauseGame = false
-                        res()
-                    }, 4000)
+                if (document.querySelector('.type-message') !== null && document.querySelector('.type-message') !== undefined) {
+                    document.querySelector('.type-message').innerHTML = this.dialogText.substring(0, i)
+                    i++
+                    if (i > this.dialogText.length) {
+                        clearInterval(printInterval)
+                        setTimeout(() => {
+                            this.element.remove()
+                            collider.pauseGame = false
+                            res()
+                        }, 4000)
+                    }
                 }
+
             }, 50)
         })
 

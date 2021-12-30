@@ -127,6 +127,41 @@ const paintScreen1 = () => {
 
 const paintScreen2 = () => {
     
+    const bush1 = document.createElement('div')
+    bush1.setAttribute('style', `
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(./assets/bush.png);
+    top: ${gameSizeY / 2}px;
+    right: ${gameSizeX / 4}px;
+    `)
+
+    const bush2 = document.createElement('div')
+    bush2.setAttribute('style', `
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(./assets/bush.png);
+    top: ${gameSizeY / 2 - 200}px;
+    right: ${gameSizeX / 4 + 200}px;
+    `)
+
+    const bush3 = document.createElement('div')
+    bush3.setAttribute('style', `
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(./assets/bush.png);
+    top: ${gameSizeY / 1.2 - 200}px;
+    right: ${gameSizeX - 400}px;
+    `)
 
     const heroElement = document.createElement('div')
     heroElement.classList.add('hero')
@@ -228,7 +263,7 @@ const paintScreen2 = () => {
 
    
 
-    const spriteList = [heroElement, enemyElement, enemyElement2, teleporterBackElem, wallElementTwo, wallElementThree, wallElementPartial1, wallElementPartial2, wallElementPartial3, wallElementPartial4, teleporterElem]
+    const spriteList = [bush1, bush2, bush3, heroElement, enemyElement, enemyElement2, teleporterBackElem, wallElementTwo, wallElementThree, wallElementPartial1, wallElementPartial2, wallElementPartial3, wallElementPartial4, teleporterElem]
     spriteList.forEach(item => document.querySelector('.objects').appendChild(item))
 
     const heroObject = new hero(heroElement)
@@ -244,6 +279,9 @@ const paintScreen2 = () => {
     new collider(wallElementPartial2)
     new collider(wallElementPartial3)
     new collider(wallElementPartial4)
+    new collider(bush1)
+    new collider(bush2)
+    new collider(bush3)
     new teleporter(teleporterElem, 3)
     
 
@@ -398,6 +436,42 @@ const paintScreen3 = () => {
 }
 
 const paintScreen4 = () => {
+
+    const bush1 = document.createElement('div')
+    bush1.setAttribute('style', `
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(./assets/bush.png);
+    top: ${gameSizeY / 1.5}px;
+    right: ${gameSizeX / 3}px;
+    `)
+
+    const bush2 = document.createElement('div')
+    bush2.setAttribute('style', `
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(./assets/bush.png);
+    top: ${gameSizeY / 1.5}px;
+    right: ${gameSizeX / 4 + 400}px;
+    `)
+
+    const bush3 = document.createElement('div')
+    bush3.setAttribute('style', `
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(./assets/bush.png);
+    top: ${gameSizeY / 2.5}px;
+    right: ${gameSizeX - 400}px;
+    `)
     
     const heroElement = document.createElement('div')
     heroElement.classList.add('hero')
@@ -508,7 +582,7 @@ const paintScreen4 = () => {
     background-image: url(./assets/grass.png);
     `)
 
-    const spriteList = [heroElement, teleporterBackElem, wallElementTwo, wallElementThree, wallElementFour, wallElementPartial1, wallElementPartial2, wallElementPartial3, wallElementPartial4, teleporterElem]
+    const spriteList = [bush1, bush2, bush3, heroElement, teleporterBackElem, wallElementTwo, wallElementThree, wallElementFour, wallElementPartial1, wallElementPartial2, wallElementPartial3, wallElementPartial4, teleporterElem]
     spriteList.forEach(item => document.querySelector('.objects').appendChild(item))
 
     const heroObject = new hero(heroElement)
@@ -521,6 +595,9 @@ const paintScreen4 = () => {
     new collider(wallElementPartial3)
     new collider(wallElementPartial4)
     new collider(wallElementFour)
+    new collider(bush1)
+    new collider(bush2)
+    new collider(bush3)
     new teleporter(teleporterElem, 5)
  
     heroObject.setPositionPX(gameSizeX / 4 - (heroElement.getBoundingClientRect().width / 2), gameSizeY / 2 - (heroElement.getBoundingClientRect().height))
@@ -655,11 +732,11 @@ const paintScreen5 = () => {
         },
         {
             name: 'LENA',
-            quote: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            quote: "Eleni! you deserve to always be happy with someone you love dearly and I think you found him. I'm excited to see what teh future holds for you two and wishing you both lots of love, happiness and good health together forever!"
         },
         {
             name: 'NATASHA',
-            quote: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            quote: 'I absolutely cannot wait to see you set out on your next adventure as this new chapter in your life begins, and it’s been my greatest privilege to be able to call you my best friend! <3'
         },
         {
             name: 'ALEJANDRO',
