@@ -4,7 +4,7 @@ import BindHeroMovement from '../../input/eventlisteners/hero'
 
 let screenToPaint = 1
 const gameSizeX = document.querySelector('.game').offsetWidth
-const gameSizeY = 991
+const gameSizeY = 1080
 
 const paintScreen1 = () => {
     document.querySelector('.audio').setAttribute('src','./assets/main.mp3')
@@ -702,6 +702,17 @@ const paintScreen5 = () => {
     background-size: cover;
     `)
 
+    const trevor = document.createElement('div')
+    trevor.setAttribute('style', `
+    position: absolute;
+    top: ${gameSizeY / 2.7   - (heroElement.getBoundingClientRect().height)}px;
+    right: ${gameSizeX / 2 - 200 - (heroElement.getBoundingClientRect().width / 2)}px;
+    height: 100px;
+    width: 80px;
+    background-image: url(./assets/trevor.png);
+    background-size: cover;
+    `)
+
     const andrew = document.createElement('div')
     andrew.classList.add('andrew')
     andrew.setAttribute('style', `
@@ -714,7 +725,7 @@ const paintScreen5 = () => {
     background-size: cover;
     `)
 
-    const spriteList = [andrew, lena, kristina, alejandro, natasha, heroElement, wallElementTwo, wallElementThree, wallElementFour, wallElementOne]
+    const spriteList = [andrew,trevor, lena, kristina, alejandro, natasha, heroElement, wallElementTwo, wallElementThree, wallElementFour, wallElementOne]
     spriteList.forEach(item => document.querySelector('.objects').appendChild(item))
 
     const heroObject = new hero(heroElement)
@@ -740,11 +751,11 @@ const paintScreen5 = () => {
         },
         {
             name: 'ALEJANDRO',
-            quote: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            quote: "I've had the pleasure of having you two as my closest friends, I can't wait to see where this next adventure will take you."
         },
         {
             name: 'TREVOR',
-            quote: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            quote: "I'm happy you're my oldest friend, Eleni. You have a way of attracting great people around you, and because of you I've gotten to meet so many awesome friends. So thank you."
         },
         {
             name: 'ANDREW',
