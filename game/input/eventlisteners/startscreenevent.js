@@ -4,6 +4,12 @@ export default function (callback) {
         document.querySelector('.audio').play()
     })
 
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'p') {
+            location.reload()
+        }
+    })
+
     const handler = () => {
 
 
